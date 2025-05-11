@@ -19,6 +19,9 @@ static Charmap drawChar(char c, int x, int y) {
   case 'a':
     return {{0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 1, 1, 0, 0}, {1, 0, 0, 1, 0},
             {1, 1, 1, 1, 0}, {1, 0, 0, 1, 0}, {1, 0, 0, 1, 0}, {0, 0, 0, 0, 0}};
+  case 'b':
+    return {{0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {1, 1, 1, 0, 0}, {1, 0, 0, 1, 0},
+            {1, 1, 1, 0, 0}, {1, 0, 0, 1, 0}, {1, 1, 1, 0, 0}, {0, 0, 0, 0, 0}};
   default:
     return {{0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}};
@@ -47,7 +50,14 @@ void refreshDisplay() {
 
   for (int y = CHAR_PAD; y < DISPLAY_HEIGHT; y += CHAR_PAD + CHARPX_HEIGHT) {
     for (int x = CHAR_PAD; x < DISPLAY_WIDTH; x += CHAR_PAD + CHARPX_WIDTH) {
-      Charmap charmap = drawChar('a', x, y);
+      char c = 'a';
+
+      if (x > y) {
+        c = 'b';
+      }
+
+      Charmap charmap = drawChar(c, x, y);
+
       for (int chary = 0; chary < charmap.size(); chary++) {
         for (int charx = 0; charx < charmap[0].size(); charx++) {
           if (charmap[chary][charx]) {

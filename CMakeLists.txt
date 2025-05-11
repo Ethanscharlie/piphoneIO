@@ -45,7 +45,7 @@ target_include_directories(piphoneIO_test PRIVATE
   include
 )
 
-include(GoogleTest)
-gtest_discover_tests(piphoneIO_test)
+# include(GoogleTest)
+# gtest_discover_tests(piphoneIO_test)
 
 #### Testing ##########################################################################

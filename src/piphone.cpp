@@ -45,6 +45,12 @@ void init() {
 }
 
 void refreshDisplay() {
+  SDL_Texture *texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,
+                                           SDL_TEXTUREACCESS_TARGET,
+                                           DISPLAY_WIDTH, DISPLAY_HEIGHT);
+
+  SDL_SetRenderTarget(renderer, texture);
+
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
   SDL_RenderClear(renderer);
 
@@ -71,6 +77,11 @@ void refreshDisplay() {
     }
   }
 
+  SDL_SetRenderTarget(renderer, nullptr);
+  SDL_Rect dstrect = {0, 0, 0, 0};
+  dstrect.w = (float)DISPLAY_WIDTH * 2;
+  dstrect.h = (float)DISPLAY_HEIGHT * 2;
+  SDL_RenderCopy(renderer, texture, nullptr, &dstrect);
   SDL_RenderPresent(renderer);
 }
 

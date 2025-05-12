@@ -1,4 +1,4 @@
-#include "piphone.hpp"
+#include "display.hpp"
 #include "globaldata.hpp"
 
 #include <SDL2/SDL.h>

@@ -14,7 +14,7 @@ find_package(GTest REQUIRED)
 
 # Library
 add_executable(piphone
-  src/piphone.cpp
+  src/io/display.cpp
   tests/test.cpp
 )
 

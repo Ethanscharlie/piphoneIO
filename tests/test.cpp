@@ -6,7 +6,6 @@
 int main() {
   PiPIO::init();
 
-  SDL_SetRenderDrawColor(PiPIO::renderer, 255, 0, 0, 255);
   SDL_Rect r = {0, 0, 30, 100};
   SDL_RenderFillRect(PiPIO::renderer, &r);
 

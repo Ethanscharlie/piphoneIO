@@ -40,6 +40,11 @@ void init() {
 }
 
 void refreshDisplay() {
+  Uint32 *pixels = new Uint32[DISPLAY_WIDTH * DISPLAY_HEIGHT];
+  const int pitch = DISPLAY_WIDTH * 4;
+  SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_RGBA8888, pixels, pitch);
+
+  // DEMO DISPLAY DRAW
   SDL_SetRenderTarget(renderer, nullptr);
   SDL_RenderCopy(renderer, screenTexture, nullptr, nullptr);
   SDL_RenderPresent(renderer);

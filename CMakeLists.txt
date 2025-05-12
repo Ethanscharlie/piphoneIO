@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.18)
 
-project(piphoneIO CXX)
-project(piphoneIO_test CXX)
+project(piphone CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -14,38 +13,19 @@ find_package(SDL2 REQUIRED)
 find_package(GTest REQUIRED)
 
 # Library
-add_library(piphoneIO STATIC
+add_executable(piphone
   src/piphone.cpp
+  tests/test.cpp
 )
 
 # Includes
-target_include_directories(piphoneIO PRIVATE
+target_include_directories(piphone PRIVATE
   include
   src
 )
 
 # External Libaries link
-target_link_libraries(piphoneIO PRIVATE 
+target_link_libraries(piphone PRIVATE 
   SDL2::SDL2
   GTest::gtest_main
 )
-
-#### Testing ##########################################################################
-add_executable(piphoneIO_test
-  tests/test.cpp
-)
-
-target_link_libraries(piphoneIO_test PRIVATE 
-  piphoneIO
-  SDL2::SDL2
-  GTest::gtest_main
-)
-
-target_include_directories(piphoneIO_test PRIVATE
-  include
-)
-
-# include(GoogleTest)
-# gtest_discover_tests(piphoneIO_test)
-
-#### Testing ##########################################################################

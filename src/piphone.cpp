@@ -67,7 +67,11 @@ void refreshDisplay() {
       for (int chary = 0; chary < charmap.size(); chary++) {
         for (int charx = 0; charx < charmap[0].size(); charx++) {
           if (charmap[chary][charx]) {
-            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+            if (y + chary < 16) {
+              SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+            } else {
+              SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
+            }
           } else {
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
           }
@@ -79,8 +83,8 @@ void refreshDisplay() {
 
   SDL_SetRenderTarget(renderer, nullptr);
   SDL_Rect dstrect = {0, 0, 0, 0};
-  dstrect.w = (float)DISPLAY_WIDTH * 2;
-  dstrect.h = (float)DISPLAY_HEIGHT * 2;
+  dstrect.w = (float)DISPLAY_WIDTH * 1;
+  dstrect.h = (float)DISPLAY_HEIGHT * 1;
   SDL_RenderCopy(renderer, texture, nullptr, &dstrect);
   SDL_RenderPresent(renderer);
 }

@@ -6,9 +6,7 @@
 int main() {
   PiPIO::init();
 
-  SDL_Rect r = {0, 0, 30, 100};
-  SDL_RenderFillRect(PiPIO::renderer, &r);
-
+  PiPIO::setPixel(0, 0, true);
   PiPIO::refreshDisplay();
 
   while (1) {

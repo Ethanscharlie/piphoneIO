@@ -27,28 +27,29 @@ void init() {
                             DISPLAY_HEIGHT, SDL_WINDOW_SHOWN);
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-  screenTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,
-                                    SDL_TEXTUREACCESS_TARGET, DISPLAY_WIDTH,
-                                    DISPLAY_HEIGHT);
-
-  SDL_SetRenderTarget(renderer, screenTexture);
-
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-  SDL_RenderClear(renderer);
-
-  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 }
 
-void refreshDisplay() {
-  Uint32 *pixels = new Uint32[DISPLAY_WIDTH * DISPLAY_HEIGHT];
-  const int pitch = DISPLAY_WIDTH * 4;
-  SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_RGBA8888, pixels, pitch);
+void clearDisplay() {
+  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+  SDL_RenderClear(renderer);
+}
 
+void setPixel(int x, int y, bool value) {
+  if (value) {
+    SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
+  } else {
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+  }
+
+  SDL_RenderDrawPoint(renderer, x, y);
+}
+
+void drawText(int x, int y, std::string text) {}
+
+void refreshDisplay() {
   // DEMO DISPLAY DRAW
-  SDL_SetRenderTarget(renderer, nullptr);
-  SDL_RenderCopy(renderer, screenTexture, nullptr, nullptr);
   SDL_RenderPresent(renderer);
-  SDL_SetRenderTarget(renderer, screenTexture);
 }
 
 } // namespace PiPIO

@@ -1,8 +1,15 @@
 #include "io/display.hpp"
+#include "io/globaldata.hpp"
+#include <SDL_render.h>
 #include <gtest/gtest.h>
 
 int main() {
   PiPIO::init();
+
+  SDL_SetRenderDrawColor(PiPIO::renderer, 255, 0, 0, 255);
+  SDL_Rect r = {0, 0, 30, 30};
+  SDL_RenderFillRect(PiPIO::renderer, &r);
+
   PiPIO::refreshDisplay();
 
   while (1) {

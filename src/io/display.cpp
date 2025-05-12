@@ -12,22 +12,6 @@
 #include <vector>
 
 namespace PiPIO {
-typedef std::vector<std::vector<bool>> Charmap;
-
-static Charmap drawChar(char c, int x, int y) {
-  switch (c) {
-  case 'a':
-    return {{0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 1, 1, 0, 0}, {1, 0, 0, 1, 0},
-            {1, 1, 1, 1, 0}, {1, 0, 0, 1, 0}, {1, 0, 0, 1, 0}, {0, 0, 0, 0, 0}};
-  case 'b':
-    return {{0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {1, 1, 1, 0, 0}, {1, 0, 0, 1, 0},
-            {1, 1, 1, 0, 0}, {1, 0, 0, 1, 0}, {1, 1, 1, 0, 0}, {0, 0, 0, 0, 0}};
-  default:
-    return {{0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}};
-  }
-}
-
 const int MAX_CHAR_HOR =
     std::floor((float)DISPLAY_WIDTH / (float)(CHARPX_WIDTH + CHAR_PAD * 2));
 const int MAX_CHAR_VER =
@@ -42,51 +26,24 @@ void init() {
                             SDL_WINDOWPOS_CENTERED, DISPLAY_WIDTH,
                             DISPLAY_HEIGHT, SDL_WINDOW_SHOWN);
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-}
 
-void refreshDisplay() {
-  SDL_Texture *texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,
-                                           SDL_TEXTUREACCESS_TARGET,
-                                           DISPLAY_WIDTH, DISPLAY_HEIGHT);
+  screenTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,
+                                    SDL_TEXTUREACCESS_TARGET, DISPLAY_WIDTH,
+                                    DISPLAY_HEIGHT);
 
-  SDL_SetRenderTarget(renderer, texture);
+  SDL_SetRenderTarget(renderer, screenTexture);
 
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
   SDL_RenderClear(renderer);
 
-  for (int y = CHAR_PAD; y < DISPLAY_HEIGHT; y += CHAR_PAD + CHARPX_HEIGHT) {
-    for (int x = CHAR_PAD; x < DISPLAY_WIDTH; x += CHAR_PAD + CHARPX_WIDTH) {
-      char c = 'a';
+  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+}
 
-      if (x > y) {
-        c = 'b';
-      }
-
-      Charmap charmap = drawChar(c, x, y);
-
-      for (int chary = 0; chary < charmap.size(); chary++) {
-        for (int charx = 0; charx < charmap[0].size(); charx++) {
-          if (charmap[chary][charx]) {
-            if (y + chary < 16) {
-              SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
-            } else {
-              SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
-            }
-          } else {
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-          }
-          SDL_RenderDrawPoint(renderer, x + charx, y + chary);
-        }
-      }
-    }
-  }
-
+void refreshDisplay() {
   SDL_SetRenderTarget(renderer, nullptr);
-  SDL_Rect dstrect = {0, 0, 0, 0};
-  dstrect.w = (float)DISPLAY_WIDTH * 1;
-  dstrect.h = (float)DISPLAY_HEIGHT * 1;
-  SDL_RenderCopy(renderer, texture, nullptr, &dstrect);
+  SDL_RenderCopy(renderer, screenTexture, nullptr, nullptr);
   SDL_RenderPresent(renderer);
+  SDL_SetRenderTarget(renderer, screenTexture);
 }
 
 } // namespace PiPIO

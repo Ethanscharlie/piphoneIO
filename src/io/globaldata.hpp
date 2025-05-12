@@ -2,7 +2,9 @@
 #include <SDL_render.h>
 #include <string>
 
+namespace PiPIO {
 inline SDL_Renderer *renderer = nullptr;
 inline SDL_Window *window = nullptr;
 
-inline std::string mainText = "aaa";
+inline SDL_Texture *screenTexture = nullptr;
+} // namespace PiPIO

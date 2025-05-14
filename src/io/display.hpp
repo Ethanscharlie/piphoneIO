@@ -4,6 +4,11 @@
 #include <string>
 namespace PiPIO {
 
+inline const int A_BUTTON_PIN = 0;
+inline const int B_BUTTON_PIN = 0;
+inline const int C_BUTTON_PIN = 0;
+inline const int D_BUTTON_PIN = 0;
+
 inline const int CHARPX_WIDTH = 5;
 inline const int CHARPX_HEIGHT = 8;
 inline const int CHAR_PAD = 1;

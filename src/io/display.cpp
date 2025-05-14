@@ -54,6 +54,12 @@ void init() {
     bcm2835_close(); // Close the library
   }
 
+  // INPUT
+  bcm2835_gpio_fsel(BCM2835_GPIO_2, 0);
+  bcm2835_gpio_fsel(BCM2835_GPIO_2, 0);
+  bcm2835_gpio_fsel(BCM2835_GPIO_2, 0);
+  bcm2835_gpio_fsel(BCM2835_GPIO_2, 0);
+
   printf("SSD1306 library Version Number :: %u\r\n", myOLED.getLibVerNum());
   printf("bcm2835 library Version Number :: %u\r\n", bcm2835_version());
   bcm2835_delay(500);

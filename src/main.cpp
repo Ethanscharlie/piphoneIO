@@ -6,6 +6,8 @@
 #ifdef SIM
 #include <SDL_events.h>
 #include <SDL_keycode.h>
+#else
+#include <bcm2835.h>
 #endif
 
 int main() {

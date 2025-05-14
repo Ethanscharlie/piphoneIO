@@ -19,6 +19,7 @@ if (${SIM})
   add_executable(piphone
     src/io/display.cpp
     src/io/font.cpp
+    src/main.cpp
     tests/test.cpp
   )
 
@@ -32,6 +33,7 @@ else()
   add_executable(piphone
     src/io/display.cpp
     src/io/font.cpp
+    src/main.cpp
     tests/test.cpp
 
     hardware/OLED/SSD1306_OLED.cpp

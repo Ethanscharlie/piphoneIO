@@ -27,7 +27,7 @@ int main() {
 
   ListMenu musicMenu =
       ListMenu({{"Toggle", [&]() { PiPIO::runSystemCommand("mpc toggle"); }},
-                {"Queue All", []() {}}});
+                {"Queue All", []() {PiPIO::runSystemCommand("mpc clear; mpc add Music; mpc shuffle; mpc play"); }}});
 
   HomeMenu homeMenu = HomeMenu({{"Music", [&]() { currentMenu = &musicMenu; }},
                                 {"Settings", []() {}},
@@ -73,6 +73,18 @@ int main() {
     if (prevA && !a) {
       PiPIO::clearDisplay();
       currentMenu->onInput(1, 0, 0, 0);
+      buttonReleased = true;
+    }
+
+    if (prevB && !b) {
+      PiPIO::clearDisplay();
+      currentMenu->onInput(0, 1, 0, 0);
+      buttonReleased = true;
+    }
+
+    if (prevC && !c) {
+      PiPIO::clearDisplay();
+      currentMenu->onInput(0, 0, 1, 0);
       buttonReleased = true;
     }
 

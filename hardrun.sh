@@ -1,6 +1,6 @@
 mkdir build
 cd build
-cmake ..
+cmake -DSIM=OFF ..
 make
 sudo ./piphone
 cd ..

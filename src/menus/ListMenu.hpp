@@ -8,18 +8,18 @@
 #include <vector>
 
 class ListMenu : public Menu {
+public:
   std::vector<std::pair<std::string, std::function<void()>>> options;
   int selection = 0;
 
-public:
   ListMenu(std::vector<std::pair<std::string, std::function<void()>>> options)
-      : options(options) {
-    if (options.empty()) {
-      throw std::logic_error("Home Menu needs at least one option");
-    }
-  }
+      : options(options) {}
 
   void render() override {
+    if (options.empty()) {
+      throw std::logic_error("Menu needs at least one option");
+    }
+
     int rangeMin = 0;
     int rangeMax = options.size();
 

@@ -128,6 +128,10 @@ void setPixel(int x, int y, bool value) {
 }
 
 static void drawChar(int x, int y, char c) {
+  if (!font.contains(c)) {
+    c = '.';
+  }
+
   Charmap charmap = font[c];
 
   for (int row = 0; row < CHARPX_WIDTH; row++) {

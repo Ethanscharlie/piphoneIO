@@ -2,6 +2,7 @@
 #include "io/globaldata.hpp"
 #include "menus/HomeMenu.hpp"
 #include "menus/ListMenu.hpp"
+#include <filesystem>
 #include <gtest/gtest.h>
 
 #ifdef SIM
@@ -25,9 +26,28 @@ int main() {
 
   Menu *currentMenu = nullptr;
 
+  ListMenu musicArtists({});
+  std::filesystem::path musicDir = "/home/ethanscharlie/Music/";
+  for (const auto &entry : std::filesystem::directory_iterator(musicDir)) {
+    if (std::filesystem::is_directory(entry)) {
+      std::string name = entry.path().filename().string();
+      musicArtists.options.push_back({name, [&]() {
+                                        PiPIO::runSystemCommand(
+                                            "mpc clear; mpc add Music/+'" +
+                                            name + "'");
+                                        PiPIO::runSystemCommand("mpc play");
+                                      }});
+    }
+  }
+
   ListMenu musicMenu =
       ListMenu({{"Toggle", [&]() { PiPIO::runSystemCommand("mpc toggle"); }},
-                {"Queue All", []() {PiPIO::runSystemCommand("mpc clear; mpc add Music; mpc shuffle; mpc play"); }}});
+                {"Queue All",
+                 []() {
+                   PiPIO::runSystemCommand(
+                       "mpc clear; mpc add Music; mpc shuffle; mpc play");
+                 }},
+                {"Pick Artist", [&]() { currentMenu = &musicArtists; }}});
 
   HomeMenu homeMenu = HomeMenu({{"Music", [&]() { currentMenu = &musicMenu; }},
                                 {"Settings", []() {}},

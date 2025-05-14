@@ -55,10 +55,10 @@ void init() {
   }
 
   // INPUT
-  bcm2835_gpio_fsel(A_BUTTON_PIN, 0);
-  bcm2835_gpio_fsel(B_BUTTON_PIN, 0);
-  bcm2835_gpio_fsel(C_BUTTON_PIN, 0);
-  bcm2835_gpio_fsel(D_BUTTON_PIN, 0);
+  //bcm2835_gpio_fsel(A_BUTTON_PIN, 0);
+  //bcm2835_gpio_fsel(B_BUTTON_PIN, 0);
+  //bcm2835_gpio_fsel(C_BUTTON_PIN, 0);
+  //bcm2835_gpio_fsel(D_BUTTON_PIN, 0);
 
   printf("SSD1306 library Version Number :: %u\r\n", myOLED.getLibVerNum());
   printf("bcm2835 library Version Number :: %u\r\n", bcm2835_version());
@@ -111,12 +111,10 @@ void setPixel(int x, int y, bool value) {
   SDL_RenderDrawPoint(renderer, x, y);
 
 #else
-  int color = BLACK;
   if (value) {
-    color = WHITE;
+    myOLED.drawPixel(x, y, WHITE);
   }
 
-  myOLED.drawPixel(x, y, WHITE);
 #endif // SUM
 }
 
@@ -125,7 +123,7 @@ static void drawChar(int x, int y, char c) {
 
   for (int row = 0; row < CHARPX_WIDTH; row++) {
     for (int col = 0; col < CHARPX_HEIGHT; col++) {
-      bool bit = (charmap[row] >> col) & 1;
+      bool bit = charmap[row] & (1 << col);
       setPixel(x + row, y + col, bit);
     }
   }

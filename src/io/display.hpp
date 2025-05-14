@@ -14,10 +14,15 @@ namespace PiPIO {
 #ifdef SIM
 
 #else
-inline const int A_BUTTON_PIN = RPI_GPIO_P1_26;
-inline const int B_BUTTON_PIN = RPI_GPIO_P1_19;
-inline const int C_BUTTON_PIN = RPI_GPIO_P1_13;
-inline const int D_BUTTON_PIN = RPI_GPIO_P1_6;
+//inline const int A_BUTTON_PIN = RPI_GPIO_P1_07;
+//inline const int B_BUTTON_PIN = RPI_GPIO_P1_16;
+//inline const int C_BUTTON_PIN = RPI_GPIO_P1_12;
+//inline const int D_BUTTON_PIN = RPI_GPIO_P1_21;
+
+inline const int A_BUTTON_PIN = RPI_GPIO_P1_12;
+inline const int B_BUTTON_PIN = RPI_GPIO_P1_16;
+inline const int C_BUTTON_PIN = RPI_GPIO_P1_18;
+inline const int D_BUTTON_PIN = RPI_GPIO_P1_22;
 #endif // SIM
 
 inline const int CHARPX_WIDTH = 5;

@@ -55,10 +55,10 @@ void init() {
   }
 
   // INPUT
-  //bcm2835_gpio_fsel(A_BUTTON_PIN, 0);
-  //bcm2835_gpio_fsel(B_BUTTON_PIN, 0);
-  //bcm2835_gpio_fsel(C_BUTTON_PIN, 0);
-  //bcm2835_gpio_fsel(D_BUTTON_PIN, 0);
+  bcm2835_gpio_fsel(A_BUTTON_PIN, 0);
+  bcm2835_gpio_fsel(B_BUTTON_PIN, 0);
+  bcm2835_gpio_fsel(C_BUTTON_PIN, 0);
+  bcm2835_gpio_fsel(D_BUTTON_PIN, 0);
 
   printf("SSD1306 library Version Number :: %u\r\n", myOLED.getLibVerNum());
   printf("bcm2835 library Version Number :: %u\r\n", bcm2835_version());

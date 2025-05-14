@@ -49,19 +49,34 @@ int main() {
       }
     }
 #else
-    bool a = bcm2835_gpio_lev(PiPIO::A_BUTTON_PIN);
-    bool b = bcm2835_gpio_lev(PiPIO::B_BUTTON_PIN);
-    bool c = bcm2835_gpio_lev(PiPIO::C_BUTTON_PIN);
-    bool d = bcm2835_gpio_lev(PiPIO::D_BUTTON_PIN);
+    bool a = (bcm2835_gpio_lev(PiPIO::A_BUTTON_PIN) == HIGH) ? 1 : 0;
+    bool b = (bcm2835_gpio_lev(PiPIO::B_BUTTON_PIN) == HIGH) ? 1 : 0;
+    bool c = (bcm2835_gpio_lev(PiPIO::C_BUTTON_PIN) == HIGH) ? 1 : 0;
+    bool d = (bcm2835_gpio_lev(PiPIO::D_BUTTON_PIN) == HIGH) ? 1 : 0;
+
+    bool buttonReleased = false;
 
     if (prevA && !a) {
+      PiPIO::clearDisplay();
       currentMenu->onInput(1, 0, 0, 0);
+      buttonReleased = true;
+    }
+
+    if (prevD && !d) {
+      PiPIO::clearDisplay();
+      currentMenu->onInput(0, 0, 0, 1);
+      buttonReleased = true;
     }
 
     prevA = a;
     prevB = b;
     prevC = c;
     prevD = d;
+
+    if (buttonReleased) {
+      currentMenu->render();
+      PiPIO::refreshDisplay();
+    }
 
 #endif // SIM
     signal(SIGINT, [](int sig) {

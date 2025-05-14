@@ -1,4 +1,4 @@
-#include "font.hpp"
+#include "io/font.hpp"
 
 std::map<char, Charmap> font = {{' ', {0x00, 0x00, 0x00, 0x00, 0x00}},
                                 {'!', {0x00, 0x00, 0x5F, 0x00, 0x00}},

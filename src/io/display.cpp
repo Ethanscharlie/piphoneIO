@@ -1,6 +1,6 @@
 #include "display.hpp"
-#include "font.hpp"
 #include "globaldata.hpp"
+#include "io/font.hpp"
 #include <stdexcept>
 
 #ifdef SIM

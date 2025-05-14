@@ -14,10 +14,10 @@ namespace PiPIO {
 #ifdef SIM
 
 #else
-//inline const int A_BUTTON_PIN = RPI_GPIO_P1_07;
-//inline const int B_BUTTON_PIN = RPI_GPIO_P1_16;
-//inline const int C_BUTTON_PIN = RPI_GPIO_P1_12;
-//inline const int D_BUTTON_PIN = RPI_GPIO_P1_21;
+// inline const int A_BUTTON_PIN = RPI_GPIO_P1_07;
+// inline const int B_BUTTON_PIN = RPI_GPIO_P1_16;
+// inline const int C_BUTTON_PIN = RPI_GPIO_P1_12;
+// inline const int D_BUTTON_PIN = RPI_GPIO_P1_21;
 
 inline const int A_BUTTON_PIN = RPI_GPIO_P1_12;
 inline const int B_BUTTON_PIN = RPI_GPIO_P1_16;
@@ -34,6 +34,7 @@ inline const int DISPLAY_HEIGHT = 64;
 extern const int MAX_CHAR_HOR;
 extern const int MAX_CHAR_VER;
 
+void runSystemCommand(std::string command);
 void init();
 void end();
 void refreshDisplay();

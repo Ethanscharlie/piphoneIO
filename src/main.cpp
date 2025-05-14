@@ -25,8 +25,9 @@ int main() {
 
   Menu *currentMenu = nullptr;
 
-  ListMenu musicMenu = ListMenu(
-      {{"Play", [&]() {}}, {"Pause", []() {}}, {"Queue All", []() {}}});
+  ListMenu musicMenu =
+      ListMenu({{"Toggle", [&]() { PiPIO::runSystemCommand("mpc toggle"); }},
+                {"Queue All", []() {}}});
 
   HomeMenu homeMenu = HomeMenu({{"Music", [&]() { currentMenu = &musicMenu; }},
                                 {"Settings", []() {}},

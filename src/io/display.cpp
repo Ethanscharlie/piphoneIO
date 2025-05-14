@@ -1,6 +1,7 @@
 #include "display.hpp"
 #include "globaldata.hpp"
 #include "io/font.hpp"
+#include <cstdlib>
 #include <stdexcept>
 
 #ifdef SIM
@@ -22,6 +23,14 @@ const int MAX_CHAR_HOR =
     std::floor((float)DISPLAY_WIDTH / (float)(CHARPX_WIDTH + CHAR_PAD * 2));
 const int MAX_CHAR_VER =
     std::floor((float)DISPLAY_HEIGHT / (float)(CHARPX_HEIGHT + CHAR_PAD * 2));
+
+void runSystemCommand(std::string command) {
+#ifdef SIM
+  system(command.c_str());
+#else
+  system(("sudo -u ethanscharlie " + command).c_str());
+#endif
+}
 
 void init() {
 #ifdef SIM

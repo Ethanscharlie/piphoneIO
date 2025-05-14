@@ -2,16 +2,19 @@
 
 #include "io/display.hpp"
 #include "menus/Menu.hpp"
+#include <functional>
 #include <stdexcept>
 #include <string>
+#include <utility>
 #include <vector>
 
 class HomeMenu : public Menu {
-  std::vector<std::string> options;
+  std::vector<std::pair<std::string, std::function<void()>>> options;
   int selection = 0;
 
 public:
-  HomeMenu(std::vector<std::string> options) : options(options) {
+  HomeMenu(std::vector<std::pair<std::string, std::function<void()>>> options)
+      : options(options) {
     if (options.empty()) {
       throw std::logic_error("Home Menu needs at least one option");
     }
@@ -28,7 +31,7 @@ public:
     }
     PiPIO::drawText(0, 0, headerText);
 
-    PiPIO::drawText(5, 16 + 5, options[selection]);
+    PiPIO::drawText(5, 16 + 5, options[selection].first);
   }
 
   void onInput(bool a, bool b, bool c, bool d) override {
@@ -44,6 +47,10 @@ public:
       if (selection < 0) {
         selection = options.size() - 1;
       }
+    }
+
+    if (!a && !b && c && !d) {
+      options[selection].second();
     }
   }
 };

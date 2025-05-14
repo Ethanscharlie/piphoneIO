@@ -23,12 +23,17 @@ int main() {
   PiPIO::init();
   PiPIO::refreshDisplay();
 
-  HomeMenu homeMenu = HomeMenu({"Music", "Settings", "Audobooks"});
+  Menu *currentMenu = nullptr;
+
   ListMenu musicMenu =
       ListMenu({"Play", "Pause", "Queue All", "Vol Up", "Vol Down", "Other",
                 "Another", "Pizza", "Ice Cream"});
 
-  Menu *currentMenu = &musicMenu;
+  HomeMenu homeMenu = HomeMenu({{"Music", [&]() { currentMenu = &musicMenu; }},
+                                {"Settings", []() {}},
+                                {"Audobooks", []() {}}});
+
+  currentMenu = &homeMenu;
   currentMenu->render();
   PiPIO::refreshDisplay();
 

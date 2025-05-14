@@ -109,7 +109,24 @@ void setPixel(int x, int y, bool value) {
 #endif // SUM
 }
 
-void drawText(int x, int y, std::string text) {}
+static void drawChar(int x, int y, char c) {
+  Charmap charmap = font[c];
+
+  for (int row = 0; row < CHARPX_WIDTH; row ++) {
+    for (int col = 0; col < CHARPX_HEIGHT; col ++) {
+      bool bit = (charmap[row] >> col) & 1;
+      drawPixel(x + row, y + col, bit);
+    }
+  }
+}
+
+void drawText(int x, int y, std::string text) {
+  for (char c : text) {
+    // TODO add x and y
+    drawChar(x, y, c);
+    break; // only do the first char for now
+  }
+}
 
 void refreshDisplay() {
 #ifdef SIM

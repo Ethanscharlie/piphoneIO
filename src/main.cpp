@@ -1,6 +1,7 @@
 #include "io/display.hpp"
 #include "io/globaldata.hpp"
 #include "menus/HomeMenu.hpp"
+#include "menus/ListMenu.hpp"
 #include <gtest/gtest.h>
 
 #ifdef SIM
@@ -23,8 +24,11 @@ int main() {
   PiPIO::refreshDisplay();
 
   HomeMenu homeMenu = HomeMenu({"Music", "Settings", "Audobooks"});
+  ListMenu musicMenu =
+      ListMenu({"Play", "Pause", "Queue All", "Vol Up", "Vol Down", "Other",
+                "Another", "Pizza", "Ice Cream"});
 
-  Menu *currentMenu = &homeMenu;
+  Menu *currentMenu = &musicMenu;
   currentMenu->render();
   PiPIO::refreshDisplay();
 

@@ -38,21 +38,20 @@ void init() {
 
   // Check if Bcm28235 lib installed and print version.
   if (!bcm2835_init()) {
-    printf("Error 1201: init bcm2835 library , Is it installed ?\r\n");
-    return false;
+    throw std::logic_error("Error 1201: init bcm2835 library , Is it installed ?\r\n");
   }
 
   // Turn on I2C bus (optionally it may already be on)
   if (!myOLED.OLED_I2C_ON()) {
-    printf(
+    throw std::logic_error(
         "Error 1202: bcm2835_i2c_begin :Cannot start I2C, Running as root?\n");
     bcm2835_close(); // Close the library
-    return false;
   }
 
   printf("SSD1306 library Version Number :: %u\r\n", myOLED.getLibVerNum());
   printf("bcm2835 library Version Number :: %u\r\n", bcm2835_version());
   bcm2835_delay(500);
+
   myOLED.OLEDbegin(I2C_Speed, I2C_Address, I2C_debug); // initialize the OLED
   myOLED.OLEDFillScreen(0xF0,
                         0); // splash screen bars, optional just for effect
@@ -101,12 +100,15 @@ void refreshDisplay() {
   SDL_RenderPresent(renderer);
 
 #else
+  uint8_t  screenBuffer[(DISPLAY_WIDTH * (DISPLAY_HEIGHT/8))];
+  if (!myOLED.OLEDSetBufferPtr(DISPLAY_WIDTH, DISPLAY_HEIGHT, screenBuffer, sizeof(screenBuffer))) return;
+
   myOLED.OLEDclearBuffer();
   myOLED.setTextColor(WHITE);
   myOLED.setCursor(10, 10);
   myOLED.print("Hello World.");
   myOLED.OLEDupdate();
-  delay(5000);
+  delay(1000);
 #endif // SUM
 }
 

@@ -8,21 +8,30 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 enable_testing()
 
-set(SIM ON)
-ADD_DEFINITIONS( -D_LOGICAL_WIDTH=\"${LOGICAL_WIDTH}\")
+set(SIM OFF)
 
 # Find packages
-find_package(SDL2 REQUIRED)
 find_package(GTest REQUIRED)
 
-# Library
-add_executable(piphone
-  src/io/display.cpp
-  tests/test.cpp
-)
+if (${SIM})
+  find_package(SDL2 REQUIRED)
 
-if (NOT ${SIM})
   add_executable(piphone
+    src/io/display.cpp
+    tests/test.cpp
+  )
+
+  target_include_directories(piphone PRIVATE
+    include
+    src
+  )
+else()
+  find_library(BCM2835_LIB bcm2835)
+
+  add_executable(piphone
+    src/io/display.cpp
+    tests/test.cpp
+
     hardware/OLED/SSD1306_OLED.cpp
     hardware/OLED/SSD1306_OLED_font.cpp
     hardware/OLED/SSD1306_OLED_graphics.cpp
@@ -30,15 +39,11 @@ if (NOT ${SIM})
   )
 
   target_include_directories(piphone PRIVATE
-    hardware
+    include
+    src
+    hardware/OLED
   )
 endif()
-
-# Includes
-target_include_directories(piphone PRIVATE
-  include
-  src
-)
 
 # External Libaries link
 target_link_libraries(piphone PRIVATE 
@@ -52,5 +57,9 @@ if (${SIM})
 
   target_compile_definitions(piphone PRIVATE 
     -DSIM 
+  )
+else()
+  target_link_libraries(piphone PRIVATE 
+    ${BCM2835_LIB}
   )
 endif()

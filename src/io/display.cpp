@@ -10,6 +10,8 @@
 #endif
 
 namespace PiPIO {
+SSD1306 myOLED(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+
 const int MAX_CHAR_HOR =
     std::floor((float)DISPLAY_WIDTH / (float)(CHARPX_WIDTH + CHAR_PAD * 2));
 const int MAX_CHAR_VER =
@@ -70,8 +72,12 @@ void end() {
 }
 
 void clearDisplay() {
+#ifdef SIM
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
   SDL_RenderClear(renderer);
+#else
+
+#endif
 }
 
 void setPixel(int x, int y, bool value) {
@@ -85,7 +91,6 @@ void setPixel(int x, int y, bool value) {
   SDL_RenderDrawPoint(renderer, x, y);
 
 #else
-
 #endif // SUM
 }
 
@@ -96,7 +101,12 @@ void refreshDisplay() {
   SDL_RenderPresent(renderer);
 
 #else
-
+  myOLED.OLEDclearBuffer();
+  myOLED.setTextColor(WHITE);
+  myOLED.setCursor(10, 10);
+  myOLED.print("Hello World.");
+  myOLED.OLEDupdate();
+  delay(5000);
 #endif // SUM
 }
 

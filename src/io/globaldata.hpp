@@ -12,6 +12,5 @@ inline SDL_Window *window = nullptr;
 
 inline SDL_Texture *screenTexture = nullptr;
 #else
-
 #endif
 } // namespace PiPIO

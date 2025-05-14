@@ -122,9 +122,13 @@ static void drawChar(int x, int y, char c) {
 
 void drawText(int x, int y, std::string text) {
   for (char c : text) {
-    // TODO add x and y
+    if (c == '\n') {
+      y += CHARPX_HEIGHT + CHAR_PAD;
+    }
+
     drawChar(x, y, c);
-    break; // only do the first char for now
+
+    x += CHARPX_WIDTH + CHAR_PAD;
   }
 }
 

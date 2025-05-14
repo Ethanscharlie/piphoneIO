@@ -44,6 +44,11 @@ int main() {
         if (event.key.keysym.sym == SDLK_SEMICOLON)
           currentMenu->onInput(0, 0, 0, 1);
 
+        if (event.key.keysym.sym == SDLK_q) {
+          PiPIO::end();
+          std::exit(1);
+        }
+
         currentMenu->render();
         PiPIO::refreshDisplay();
       }

@@ -1,15 +1,12 @@
 #include "display.hpp"
 #include "globaldata.hpp"
-
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_video.h>
-#include <SDL_pixels.h>
-#include <SDL_render.h>
-#include <SDL_surface.h>
-#include <array>
-#include <iostream>
 #include <stdexcept>
-#include <vector>
+
+#ifdef SIM
+#include <SDL2/SDL.h>
+#else
+
+#endif
 
 namespace PiPIO {
 const int MAX_CHAR_HOR =
@@ -18,6 +15,7 @@ const int MAX_CHAR_VER =
     std::floor((float)DISPLAY_HEIGHT / (float)(CHARPX_HEIGHT + CHAR_PAD * 2));
 
 void init() {
+#ifdef SIM
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     throw std::logic_error(SDL_GetError());
   }
@@ -28,6 +26,10 @@ void init() {
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+
+#else
+
+#endif // SUM
 }
 
 void clearDisplay() {
@@ -36,6 +38,7 @@ void clearDisplay() {
 }
 
 void setPixel(int x, int y, bool value) {
+#ifdef SIM
   if (value) {
     SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
   } else {
@@ -43,13 +46,21 @@ void setPixel(int x, int y, bool value) {
   }
 
   SDL_RenderDrawPoint(renderer, x, y);
+
+#else
+
+#endif // SUM
 }
 
 void drawText(int x, int y, std::string text) {}
 
 void refreshDisplay() {
-  // DEMO DISPLAY DRAW
+#ifdef SIM
   SDL_RenderPresent(renderer);
+
+#else
+
+#endif // SUM
 }
 
 } // namespace PiPIO

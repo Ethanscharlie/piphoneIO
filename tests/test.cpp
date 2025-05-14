@@ -1,12 +1,16 @@
 #include "io/display.hpp"
 #include "io/globaldata.hpp"
-#include <SDL_render.h>
 #include <gtest/gtest.h>
 
 int main() {
   PiPIO::init();
 
-  PiPIO::setPixel(0, 0, true);
+  for (int x = 20; x < 100; x++) {
+    for (int y = 20; y < 30; y++) {
+      PiPIO::setPixel(x, y, true);
+    }
+  }
+
   PiPIO::refreshDisplay();
 
   while (1) {

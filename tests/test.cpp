@@ -11,7 +11,7 @@ int main() {
   //   }
   // }
   //
-  PiPIO::drawText(10, 10, "AAAAAAAAA");
+  PiPIO::drawText(10, 10, "HelloWorld!");
 
   PiPIO::refreshDisplay();
 

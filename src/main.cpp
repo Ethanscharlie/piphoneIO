@@ -3,6 +3,11 @@
 #include "menus/HomeMenu.hpp"
 #include <gtest/gtest.h>
 
+#ifdef SIM
+#include <SDL_events.h>
+#include <SDL_keycode.h>
+#endif
+
 int main() {
   PiPIO::init();
   PiPIO::refreshDisplay();
@@ -15,7 +20,24 @@ int main() {
 
   while (1) {
 #ifdef SIM
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+      if (event.type == SDL_KEYUP) {
+        PiPIO::clearDisplay();
 
+        if (event.key.keysym.sym == SDLK_j)
+          currentMenu->onInput(1, 0, 0, 0);
+        if (event.key.keysym.sym == SDLK_k)
+          currentMenu->onInput(0, 1, 0, 0);
+        if (event.key.keysym.sym == SDLK_l)
+          currentMenu->onInput(0, 0, 1, 0);
+        if (event.key.keysym.sym == SDLK_SEMICOLON)
+          currentMenu->onInput(0, 0, 0, 1);
+
+        currentMenu->render();
+        PiPIO::refreshDisplay();
+      }
+    }
 #else
 
 #endif // SIM

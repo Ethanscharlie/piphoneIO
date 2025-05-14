@@ -100,6 +100,12 @@ void setPixel(int x, int y, bool value) {
   SDL_RenderDrawPoint(renderer, x, y);
 
 #else
+  int color = BLACK;
+  if (value) {
+    color = WHITE;
+  } 
+
+  myOLED.drawPixel(x, y, WHITE);
 #endif // SUM
 }
 
@@ -110,8 +116,6 @@ void refreshDisplay() {
   SDL_RenderPresent(renderer);
 
 #else
-  myOLED.setCursor(10, 10);
-  myOLED.print("Hello World.");
   myOLED.OLEDupdate();
 #endif // SUM
 }

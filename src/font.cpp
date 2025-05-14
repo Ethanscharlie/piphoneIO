@@ -1,10 +1,4 @@
-#include <vector>
-#include <map>
-
-typedef std::vector<int> Charmap;
-
-const int CHAR_WIDTH = 4;
-const int CHAR_HEIGHT = 8;
+#include "font.hpp"
 
 std::map<char, Charmap> = {
 	{ ' ', { 0x00,0x00,0x00,0x00 } },  

@@ -4,10 +4,10 @@
 #include <string>
 namespace PiPIO {
 
-inline const int A_BUTTON_PIN = 0;
-inline const int B_BUTTON_PIN = 0;
-inline const int C_BUTTON_PIN = 0;
-inline const int D_BUTTON_PIN = 0;
+inline const int A_BUTTON_PIN = 26;
+inline const int B_BUTTON_PIN = 19;
+inline const int C_BUTTON_PIN = 13;
+inline const int D_BUTTON_PIN = 6;
 
 inline const int CHARPX_WIDTH = 5;
 inline const int CHARPX_HEIGHT = 8;

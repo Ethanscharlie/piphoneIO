@@ -41,6 +41,11 @@ int main() {
       }
     }
 #else
+    uint8_t a = bcm2835_gpio_lev(A_BUTTON_PIN);
+    uint8_t b = bcm2835_gpio_lev(B_BUTTON_PIN);
+    uint8_t c = bcm2835_gpio_lev(C_BUTTON_PIN);
+    uint8_t d = bcm2835_gpio_lev(D_BUTTON_PIN);
+    std::cout << a << ", " << b << ", " << c << ", " << d << "\n";
 
 #endif // SIM
     signal(SIGINT, [](int sig) {

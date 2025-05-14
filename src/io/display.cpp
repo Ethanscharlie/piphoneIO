@@ -11,6 +11,7 @@
 
 namespace PiPIO {
 SSD1306 myOLED(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+uint8_t screenBuffer[(DISPLAY_WIDTH * (DISPLAY_HEIGHT / 8))];
 
 const int MAX_CHAR_HOR =
     std::floor((float)DISPLAY_WIDTH / (float)(CHARPX_WIDTH + CHAR_PAD * 2));
@@ -34,7 +35,6 @@ void init() {
   const uint16_t I2C_Speed = BCM2835_I2C_CLOCK_DIVIDER_626;
   const uint8_t I2C_Address = 0x3C;
   bool I2C_debug = false;
-  printf("OLED Test Begin\r\n");
 
   // Check if Bcm28235 lib installed and print version.
   if (!bcm2835_init()) {
@@ -58,11 +58,12 @@ void init() {
                         0); // splash screen bars, optional just for effect
   bcm2835_delay(1000);
 
-  uint8_t screenBuffer[(DISPLAY_WIDTH * (DISPLAY_HEIGHT / 8))];
   if (!myOLED.OLEDSetBufferPtr(DISPLAY_WIDTH, DISPLAY_HEIGHT, screenBuffer,
-                               sizeof(screenBuffer)))
-    return;
+                               sizeof(screenBuffer))) {
+    throw std::logic_error("OLED SEt Buffer Pointer Failed");
+  }
 
+  myOLED.setTextColor(WHITE);
   clearDisplay();
 #endif // SUM
 }
@@ -83,6 +84,7 @@ void clearDisplay() {
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
   SDL_RenderClear(renderer);
 #else
+  myOLED.OLEDFillScreen(0x00, 0);
   myOLED.OLEDclearBuffer();
 #endif
 }
@@ -111,7 +113,6 @@ void refreshDisplay() {
   myOLED.setCursor(10, 10);
   myOLED.print("Hello World.");
   myOLED.OLEDupdate();
-  delay(1000);
 #endif // SUM
 }
 

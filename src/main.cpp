@@ -11,6 +11,14 @@
 #endif
 
 int main() {
+#ifdef SIM
+#else
+  bool prevA = 0;
+  bool prevB = 0;
+  bool prevC = 0;
+  bool prevD = 0;
+#endif
+
   PiPIO::init();
   PiPIO::refreshDisplay();
 
@@ -41,11 +49,19 @@ int main() {
       }
     }
 #else
-    int a = bcm2835_gpio_lev(PiPIO::A_BUTTON_PIN);
-    int b = bcm2835_gpio_lev(PiPIO::B_BUTTON_PIN);
-    int c = bcm2835_gpio_lev(PiPIO::C_BUTTON_PIN);
-    int d = bcm2835_gpio_lev(PiPIO::D_BUTTON_PIN);
-    std::cout << a << ", " << b << ", " << c << ", " << d << "\n";
+    bool a = bcm2835_gpio_lev(PiPIO::A_BUTTON_PIN);
+    bool b = bcm2835_gpio_lev(PiPIO::B_BUTTON_PIN);
+    bool c = bcm2835_gpio_lev(PiPIO::C_BUTTON_PIN);
+    bool d = bcm2835_gpio_lev(PiPIO::D_BUTTON_PIN);
+
+    if (prevA && !a) {
+      currentMenu->onInput(1, 0, 0, 0);
+    }
+
+    prevA = a;
+    prevB = b;
+    prevC = c;
+    prevD = d;
 
 #endif // SIM
     signal(SIGINT, [](int sig) {

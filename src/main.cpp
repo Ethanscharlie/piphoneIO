@@ -25,9 +25,8 @@ int main() {
 
   Menu *currentMenu = nullptr;
 
-  ListMenu musicMenu =
-      ListMenu({"Play", "Pause", "Queue All", "Vol Up", "Vol Down", "Other",
-                "Another", "Pizza", "Ice Cream"});
+  ListMenu musicMenu = ListMenu(
+      {{"Play", [&]() {}}, {"Pause", []() {}}, {"Queue All", []() {}}});
 
   HomeMenu homeMenu = HomeMenu({{"Music", [&]() { currentMenu = &musicMenu; }},
                                 {"Settings", []() {}},

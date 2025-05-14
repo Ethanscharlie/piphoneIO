@@ -14,6 +14,7 @@ extern const int MAX_CHAR_HOR;
 extern const int MAX_CHAR_VER;
 
 void init();
+void end();
 void refreshDisplay();
 void clearDisplay();
 void setPixel(int x, int y, bool value);

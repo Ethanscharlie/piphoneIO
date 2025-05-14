@@ -14,6 +14,9 @@ int main() {
   PiPIO::refreshDisplay();
 
   while (1) {
-    signal(SIGINT, [](int sig) { std::exit(1); });
+    signal(SIGINT, [](int sig) {
+      PiPIO::end();
+      std::exit(1);
+    });
   }
 }

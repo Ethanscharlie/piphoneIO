@@ -2,12 +2,23 @@
 
 #include <cmath>
 #include <string>
+
+#ifdef SIM
+
+#else
+#include <bcm2835.h>
+#endif // SIM
+
 namespace PiPIO {
 
-inline const int A_BUTTON_PIN = 26;
-inline const int B_BUTTON_PIN = 19;
-inline const int C_BUTTON_PIN = 13;
-inline const int D_BUTTON_PIN = 6;
+#ifdef SIM
+
+#else
+inline const int A_BUTTON_PIN = RPI_GPIO_P1_26;
+inline const int B_BUTTON_PIN = RPI_GPIO_P1_19;
+inline const int C_BUTTON_PIN = RPI_GPIO_P1_13;
+inline const int D_BUTTON_PIN = RPI_GPIO_P1_6;
+#endif // SIM
 
 inline const int CHARPX_WIDTH = 5;
 inline const int CHARPX_HEIGHT = 8;

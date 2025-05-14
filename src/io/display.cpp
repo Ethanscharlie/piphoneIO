@@ -1,4 +1,5 @@
 #include "display.hpp"
+#include "font.hpp"
 #include "globaldata.hpp"
 #include <stdexcept>
 
@@ -10,8 +11,12 @@
 #endif
 
 namespace PiPIO {
+#ifdef SIM
+
+#else
 SSD1306 myOLED(DISPLAY_WIDTH, DISPLAY_HEIGHT);
 uint8_t screenBuffer[(DISPLAY_WIDTH * (DISPLAY_HEIGHT / 8))];
+#endif
 
 const int MAX_CHAR_HOR =
     std::floor((float)DISPLAY_WIDTH / (float)(CHARPX_WIDTH + CHAR_PAD * 2));
@@ -103,7 +108,7 @@ void setPixel(int x, int y, bool value) {
   int color = BLACK;
   if (value) {
     color = WHITE;
-  } 
+  }
 
   myOLED.drawPixel(x, y, WHITE);
 #endif // SUM
@@ -112,10 +117,10 @@ void setPixel(int x, int y, bool value) {
 static void drawChar(int x, int y, char c) {
   Charmap charmap = font[c];
 
-  for (int row = 0; row < CHARPX_WIDTH; row ++) {
-    for (int col = 0; col < CHARPX_HEIGHT; col ++) {
+  for (int row = 0; row < CHARPX_WIDTH; row++) {
+    for (int col = 0; col < CHARPX_HEIGHT; col++) {
       bool bit = (charmap[row] >> col) & 1;
-      drawPixel(x + row, y + col, bit);
+      setPixel(x + row, y + col, bit);
     }
   }
 }

@@ -8,7 +8,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 enable_testing()
 
-set(SIM OFF)
+set(SIM ON)
 
 # Find packages
 find_package(GTest REQUIRED)

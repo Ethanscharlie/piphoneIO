@@ -29,6 +29,13 @@ public:
         headerText += " .";
       }
     }
+
+    int padding = (PiPIO::MAX_CHAR_HOR - headerText.size()) / 2;
+
+    for (int i = 0; i < padding; i++) {
+      headerText = " " + headerText;
+    }
+
     PiPIO::drawText(0, 0, headerText);
 
     PiPIO::drawText(5, 16 + 5, options[selection].first);

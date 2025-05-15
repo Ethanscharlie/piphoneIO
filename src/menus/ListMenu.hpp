@@ -63,5 +63,9 @@ public:
     if (!a && !b && c && !d) {
       options[selection].second();
     }
+
+    if (!a && b && !c && !d) {
+      selection = options.size() - 1;
+    }
   }
 };

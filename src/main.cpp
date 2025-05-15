@@ -52,6 +52,10 @@ int main() {
   HomeMenu homeMenu = HomeMenu({{"Music", [&]() { currentMenu = &musicMenu; }},
                                 {"Settings", []() {}},
                                 {"Audobooks", []() {}}});
+  // Back buttons
+  musicArtists.options.push_back(
+      {"<- back", [&]() { currentMenu = &homeMenu; }});
+  musicMenu.options.push_back({"<- back", [&]() { currentMenu = &homeMenu; }});
 
   currentMenu = &homeMenu;
   currentMenu->render();

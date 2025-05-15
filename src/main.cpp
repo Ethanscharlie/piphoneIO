@@ -42,6 +42,7 @@ int main() {
 
   ListMenu musicMenu =
       ListMenu({{"Toggle", [&]() { PiPIO::runSystemCommand("mpc toggle"); }},
+                {"Skip", []() { PiPIO::runSystemCommand("mpc next"); }},
                 {"Queue All",
                  []() {
                    PiPIO::runSystemCommand(

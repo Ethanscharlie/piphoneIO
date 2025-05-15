@@ -51,8 +51,13 @@ int main() {
                 {"Pick Artist", [&]() { currentMenu = &musicArtists; }}});
 
   HomeMenu homeMenu = HomeMenu({{"Music", [&]() { currentMenu = &musicMenu; }},
-                                {"Settings", []() {}},
-                                {"Audobooks", []() {}}});
+                                {"YouTube", []() {}},
+                                {"Spend Recorder", []() {}},
+                                {"AudioBooks", []() {}},
+                                {"Media Library", []() {}},
+                                {"Stopwatch", []() {}},
+                                {"Alarm", []() {}},
+                                {"Settings", []() {}}});
   // Back buttons
   musicArtists.options.push_back(
       {"<- back", [&]() { currentMenu = &homeMenu; }});

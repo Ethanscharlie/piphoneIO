@@ -31,10 +31,10 @@ int main() {
   for (const auto &entry : std::filesystem::directory_iterator(musicDir)) {
     if (std::filesystem::is_directory(entry)) {
       std::string name = entry.path().filename().string();
-      musicArtists.options.push_back({name, [&]() {
+      musicArtists.options.push_back({name, [name]() {
                                         PiPIO::runSystemCommand(
-                                            "mpc clear; mpc add Music/+'" +
-                                            name + "'");
+                                            "mpc clear; mpc add Music/\"" +
+                                            name + "\"");
                                         PiPIO::runSystemCommand("mpc play");
                                       }});
     }

@@ -14,10 +14,7 @@
 int main() {
 #ifdef SIM
 #else
-  bool prevA = 0;
-  bool prevB = 0;
-  bool prevC = 0;
-  bool prevD = 0;
+  PiPIO::Buttons prevButtons;
 #endif
 
   PiPIO::init();
@@ -94,41 +91,35 @@ int main() {
       }
     }
 #else
-    bool a = (bcm2835_gpio_lev(PiPIO::A_BUTTON_PIN) == HIGH) ? 1 : 0;
-    bool b = (bcm2835_gpio_lev(PiPIO::B_BUTTON_PIN) == HIGH) ? 1 : 0;
-    bool c = (bcm2835_gpio_lev(PiPIO::C_BUTTON_PIN) == HIGH) ? 1 : 0;
-    bool d = (bcm2835_gpio_lev(PiPIO::D_BUTTON_PIN) == HIGH) ? 1 : 0;
+    Buttons currentButtons = PiPIO::getButtons();
 
     bool buttonReleased = false;
 
-    if (prevA && !a) {
+    if (prevButtons.a && !currentButtons.a) {
       PiPIO::clearDisplay();
       currentMenu->onInput(1, 0, 0, 0);
       buttonReleased = true;
     }
 
-    if (prevB && !b) {
+    if (prevButtons.b && !currentButtons.b) {
       PiPIO::clearDisplay();
       currentMenu->onInput(0, 1, 0, 0);
       buttonReleased = true;
     }
 
-    if (prevC && !c) {
+    if (prevButtons.c && !currentButtons.c) {
       PiPIO::clearDisplay();
       currentMenu->onInput(0, 0, 1, 0);
       buttonReleased = true;
     }
 
-    if (prevD && !d) {
+    if (prevButtons.d && !currentButtons.d) {
       PiPIO::clearDisplay();
       currentMenu->onInput(0, 0, 0, 1);
       buttonReleased = true;
     }
 
-    prevA = a;
-    prevB = b;
-    prevC = c;
-    prevD = d;
+    prevButtons = currentButtons;
 
     if (buttonReleased) {
       currentMenu->render();

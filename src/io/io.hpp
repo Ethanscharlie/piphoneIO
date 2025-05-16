@@ -15,7 +15,12 @@ namespace PiPIO {
 
 typedef std::vector<int> Charmap;
 
-extern std::map<char, Charmap> font;
+struct Buttons {
+  bool a = false;
+  bool b = false;
+  bool c = false;
+  bool d = false;
+};
 
 #ifdef SIM
 
@@ -41,12 +46,17 @@ inline const int DISPLAY_HEIGHT = 64;
 extern const int MAX_CHAR_HOR;
 extern const int MAX_CHAR_VER;
 
+extern std::map<char, Charmap> font;
+
 void runSystemCommand(std::string command);
 void init();
 void end();
+
 void refreshDisplay();
 void clearDisplay();
 void setPixel(int x, int y, bool value);
 void drawText(int x, int y, std::string text);
+
+Buttons getButtons();
 
 } // namespace PiPIO

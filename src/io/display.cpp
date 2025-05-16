@@ -1,6 +1,4 @@
-#include "display.hpp"
-#include "globaldata.hpp"
-#include "io/font.hpp"
+#include "io.hpp"
 #include <cstdlib>
 #include <stdexcept>
 

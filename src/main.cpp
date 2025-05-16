@@ -1,5 +1,4 @@
-#include "io/display.hpp"
-#include "io/globaldata.hpp"
+#include "io/io.hpp"
 #include "menus/HomeMenu.hpp"
 #include "menus/ListMenu.hpp"
 #include <filesystem>
@@ -28,15 +27,17 @@ int main() {
 
   ListMenu musicArtists({});
   std::filesystem::path musicDir = "/home/ethanscharlie/Music/";
-  for (const auto &entry : std::filesystem::directory_iterator(musicDir)) {
-    if (std::filesystem::is_directory(entry)) {
-      std::string name = entry.path().filename().string();
-      musicArtists.options.push_back({name, [name]() {
-                                        PiPIO::runSystemCommand(
-                                            "mpc clear; mpc add Music/\"" +
-                                            name + "\"");
-                                        PiPIO::runSystemCommand("mpc play");
-                                      }});
+  if (std::filesystem::exists(musicDir)) {
+    for (const auto &entry : std::filesystem::directory_iterator(musicDir)) {
+      if (std::filesystem::is_directory(entry)) {
+        std::string name = entry.path().filename().string();
+        musicArtists.options.push_back({name, [name]() {
+                                          PiPIO::runSystemCommand(
+                                              "mpc clear; mpc add Music/\"" +
+                                              name + "\"");
+                                          PiPIO::runSystemCommand("mpc play");
+                                        }});
+      }
     }
   }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "io/display.hpp"
+#include "io/io.hpp"
 #include "menus/Menu.hpp"
 #include <functional>
 #include <stdexcept>

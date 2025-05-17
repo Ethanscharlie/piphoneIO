@@ -12,6 +12,7 @@ set(SIM ON)
 
 # Find packages
 find_package(GTest REQUIRED)
+find_package(CURL REQUIRED)
 
 if (${SIM})
   find_package(SDL2 REQUIRED)
@@ -21,11 +22,14 @@ if (${SIM})
     src/io/font.cpp
     src/main.cpp
     tests/test.cpp
+
+    hardware/XML/tinyxml2.cpp
   )
 
   target_include_directories(piphone PRIVATE
     include
     src
+    hardware/XML
   )
 else()
   find_library(BCM2835_LIB bcm2835)
@@ -36,6 +40,7 @@ else()
     src/main.cpp
     tests/test.cpp
 
+    hardware/XML/tinyxml2.cpp
     hardware/OLED/SSD1306_OLED.cpp
     hardware/OLED/SSD1306_OLED_font.cpp
     hardware/OLED/SSD1306_OLED_graphics.cpp
@@ -46,12 +51,14 @@ else()
     include
     src
     hardware/OLED
+    hardware/XML
   )
 endif()
 
 # External Libaries link
 target_link_libraries(piphone PRIVATE 
   GTest::gtest_main
+  CURL::libcurl
 )
 
 if (${SIM})

@@ -2,6 +2,7 @@
 #include "menus/HomeMenu.hpp"
 #include "menus/ListMenu.hpp"
 #include "menus/StopwatchMenu.hpp"
+#include "menus/YouTubeMenu.hpp"
 #include "utils.hpp"
 #include <filesystem>
 #include <gtest/gtest.h>
@@ -25,6 +26,7 @@ int main() {
   Menu *currentMenu = nullptr;
 
   StopwatchMenu stopwatchMenu;
+  YouTubeMenu youTubeMenu;
 
   ListMenu musicArtists({});
   std::filesystem::path musicDir = "/home/ethanscharlie/Music/";
@@ -64,7 +66,7 @@ int main() {
                 {"Alarm", []() {}},
                 {"Settings", []() {}}});
 
-  currentMenu = &homeMenu;
+  currentMenu = &youTubeMenu;
   currentMenu->render();
   PiPIO::refreshDisplay();
 

@@ -1,6 +1,7 @@
 #include "io/io.hpp"
 #include "menus/HomeMenu.hpp"
 #include "menus/ListMenu.hpp"
+#include "menus/StopwatchMenu.hpp"
 #include <filesystem>
 #include <gtest/gtest.h>
 
@@ -21,6 +22,8 @@ int main() {
   PiPIO::refreshDisplay();
 
   Menu *currentMenu = nullptr;
+
+  StopwatchMenu stopwatchMenu;
 
   ListMenu musicArtists({});
   std::filesystem::path musicDir = "/home/ethanscharlie/Music/";
@@ -48,14 +51,16 @@ int main() {
                  }},
                 {"Pick Artist", [&]() { currentMenu = &musicArtists; }}});
 
-  HomeMenu homeMenu = HomeMenu({{"Music", [&]() { currentMenu = &musicMenu; }},
-                                {"YouTube", []() {}},
-                                {"Spend Recorder", []() {}},
-                                {"AudioBooks", []() {}},
-                                {"Media Library", []() {}},
-                                {"Stopwatch", []() {}},
-                                {"Alarm", []() {}},
-                                {"Settings", []() {}}});
+  HomeMenu homeMenu =
+      HomeMenu({{"Music", [&]() { currentMenu = &musicMenu; }},
+                {"YouTube", []() {}},
+                {"Spend Recorder", []() {}},
+                {"AudioBooks", []() {}},
+                {"Media Library", []() {}},
+                {"Stopwatch", [&]() { currentMenu = &stopwatchMenu; }},
+                {"Alarm", []() {}},
+                {"Settings", []() {}}});
+
   // Back buttons
   musicArtists.options.push_back(
       {"<- back", [&]() { currentMenu = &homeMenu; }});

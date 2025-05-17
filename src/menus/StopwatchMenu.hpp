@@ -2,6 +2,8 @@
 #pragma once
 
 #include <chrono>
+#include <format>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -12,22 +14,38 @@ class StopwatchMenu : public Menu {
   int selection = 0;
 
   bool running = false;
-  float recordedTime = 0;
-  float startTime;
+  long recordedTime = 0;
+  long startTime = 0;
 
-  float getCurrentMili() {
+  long getCurrentMili() {
     auto now = std::chrono::system_clock::now();
-    float milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(
-                             now.time_since_epoch())
-                             .count();
+    auto duration = now.time_since_epoch();
+    long milliseconds =
+        std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
     return milliseconds;
   }
 
-  float getElapsedTimeSinceStart() { return getCurrentMili() - startTime; }
+  long getElapsedTimeSinceStart() { return getCurrentMili() - startTime; }
 
   std::string getClockString() {
-    float time = recordedTime + getElapsedTimeSinceStart();
-    return std::to_string(time);
+    long time;
+
+    if (running) {
+      time = recordedTime + getElapsedTimeSinceStart();
+    } else {
+      time = recordedTime;
+    }
+
+    unsigned long seconds = time / 1000;
+    unsigned long minutes = seconds / 60;
+    unsigned long hours = minutes / 60;
+    unsigned long days = hours / 24;
+    time %= 1000;
+    seconds %= 60;
+    minutes %= 60;
+    hours %= 24;
+
+    return std::format("{}:{}:{}", hours, minutes, seconds);
   }
 
   void startClock() {
@@ -50,28 +68,19 @@ class StopwatchMenu : public Menu {
   }
 
 public:
-  void render() override {
-    std::vector<std::string> options = {"Start", "Plause", "Clear"};
-    for (int i = 0; i < options.size(); i++) {
-      std::string line = "";
+  void render() override { PiPIO::drawText(20, 20, getClockString()); }
 
-      if (selection == i) {
-        line += " ";
-      } else {
-        line += ">";
-      }
-
-      line += options[i];
-
-      int y = 16 + i * PiPIO::CHARPX_HEIGHT + PiPIO::CHAR_PAD;
-      PiPIO::drawText(0, y, line);
+  void onInput(bool a, bool b, bool c, bool d) override {
+    if (a && !b && !c && !d) {
+      startClock();
     }
 
-    int timeY =
-        16 + (options.size() + 2) * PiPIO::CHARPX_HEIGHT + PiPIO::CHAR_PAD;
+    if (!a && !b && c && !d) {
+      pauseClock();
+    }
 
-    PiPIO::drawText(0, timeY, getClockString());
+    if (!a && !b && !c && d) {
+      clearClock();
+    }
   }
-
-  void onInput(bool a, bool b, bool c, bool d) override {}
 };

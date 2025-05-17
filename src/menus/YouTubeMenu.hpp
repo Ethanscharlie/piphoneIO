@@ -1,7 +1,10 @@
 #pragma once
 
+#include <filesystem>
 #include <format>
+#include <fstream>
 #include <gtest/gtest.h>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -26,6 +29,9 @@ class YouTubeMenu : public Menu {
   const std::vector<std::string> channelIDs = {"UC8CsGpP6kVNrWeBVmlJ2UyA",
                                                "UCl2mFZoRqjw_ELax4Yisf6w"};
 
+  const std::string rssFolder = "piphone_data/yt/rss/";
+  const std::string videoFolder = "piphone_data/yt/videos/";
+
   int selection = 0;
   std::vector<YTVideo> videos;
 
@@ -36,7 +42,7 @@ class YouTubeMenu : public Menu {
     return totalSize;
   }
 
-  static std::string getRssXml(const std::string &url) {
+  void downloadRssXML(const std::string &url, const std::string &name) const {
     CURL *curl;
     CURLcode res;
     std::string readBuffer;
@@ -53,10 +59,33 @@ class YouTubeMenu : public Menu {
       if (res != CURLE_OK) {
         std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res)
                   << std::endl;
-        return "";
+        return;
       }
     }
-    return readBuffer;
+
+    std::ofstream file(rssFolder + name);
+    file << readBuffer;
+    file.close();
+  }
+
+  void createFolders() const {
+    std::vector<std::string> folders = {"piphone_data", "piphone_data/yt",
+                                        rssFolder, videoFolder};
+
+    for (const std::string &folder : folders) {
+      if (!std::filesystem::is_directory(folder) ||
+          !std::filesystem::exists(folder)) {
+        std::filesystem::create_directory(folder);
+      }
+    }
+  }
+
+  std::string readFile(const std::string &filepath) {
+    std::ifstream file(filepath);
+    std::ostringstream ss;
+    ss << file.rdbuf();
+    std::string str = ss.str();
+    return str;
   }
 
   static std::vector<YTVideo> getChannelFeed(const std::string &rssXML) {
@@ -84,12 +113,19 @@ class YouTubeMenu : public Menu {
     return videos;
   }
 
+  void downloadAllRssXML() {
+    for (const std::string &channelID : channelIDs) {
+      const std::string channelURL = rssTemplate + channelID;
+      downloadRssXML(channelURL, channelID);
+    }
+  }
+
   void getFeed() {
     videos.clear();
 
     for (const std::string &channelID : channelIDs) {
-      const std::string channelURL = rssTemplate + channelID;
-      const std::string rssXML = getRssXml(channelURL);
+      const std::string filepath = rssFolder + channelID;
+      const std::string rssXML = readFile(filepath);
       std::vector<YTVideo> channelVideos = getChannelFeed(rssXML);
 
       for (const YTVideo &video : channelVideos) {
@@ -99,7 +135,11 @@ class YouTubeMenu : public Menu {
   }
 
 public:
-  YouTubeMenu() { getFeed(); }
+  YouTubeMenu() {
+    createFolders();
+    downloadAllRssXML();
+    getFeed();
+  }
 
   void render() override {
     int rangeMin = 0;

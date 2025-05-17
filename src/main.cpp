@@ -40,6 +40,8 @@ int main() {
                                         }});
       }
     }
+  } else {
+    musicArtists.options.push_back({"Nothing Found.", []() {}});
   }
 
   ListMenu musicMenu =
@@ -62,11 +64,6 @@ int main() {
                 {"Alarm", []() {}},
                 {"Settings", []() {}}});
 
-  // Back buttons
-  musicArtists.options.push_back(
-      {"<- back", [&]() { currentMenu = &homeMenu; }});
-  musicMenu.options.push_back({"<- back", [&]() { currentMenu = &homeMenu; }});
-
   currentMenu = &homeMenu;
   currentMenu->render();
   PiPIO::refreshDisplay();
@@ -84,7 +81,7 @@ int main() {
         if (event.key.keysym.sym == SDLK_j)
           currentMenu->onInput(1, 0, 0, 0);
         if (event.key.keysym.sym == SDLK_k)
-          currentMenu->onInput(0, 1, 0, 0);
+          currentMenu = &homeMenu;
         if (event.key.keysym.sym == SDLK_l)
           currentMenu->onInput(0, 0, 1, 0);
         if (event.key.keysym.sym == SDLK_SEMICOLON)
@@ -112,7 +109,7 @@ int main() {
 
     if (prevButtons.b && !currentButtons.b) {
       PiPIO::clearDisplay();
-      currentMenu->onInput(0, 1, 0, 0);
+      currentMenu = &homeMenu;
       buttonReleased = true;
     }
 

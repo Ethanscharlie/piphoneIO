@@ -16,6 +16,7 @@ class YouTubeMenu : public Menu {
     std::string url;
     std::string channel;
     std::string published;
+    std::string id;
 
     std::string getLine() const {
       return std::format("{} : {}", title, channel);
@@ -75,8 +76,9 @@ class YouTubeMenu : public Menu {
           entry->FirstChildElement("link")->Attribute("href");
       const std::string published =
           entry->FirstChildElement("published")->GetText();
+      const std::string id = entry->FirstChildElement("yt:videoId")->GetText();
 
-      videos.push_back({title, url, channel, published});
+      videos.push_back({title, url, channel, published, id});
     }
 
     return videos;

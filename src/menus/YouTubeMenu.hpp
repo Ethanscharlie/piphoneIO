@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "io/io.hpp"
 #include "tinyxml2.h"
 
 #include "Menu.hpp"
@@ -17,10 +18,6 @@ class YouTubeMenu : public Menu {
     std::string channel;
     std::string published;
     std::string id;
-
-    std::string getLine() const {
-      return std::format("{} : {}", title, channel);
-    }
   };
 
   const std::string rssTemplate =
@@ -28,6 +25,9 @@ class YouTubeMenu : public Menu {
 
   const std::vector<std::string> channelIDs = {"UC8CsGpP6kVNrWeBVmlJ2UyA",
                                                "UCl2mFZoRqjw_ELax4Yisf6w"};
+
+  int selection = 0;
+  std::vector<YTVideo> videos;
 
   static size_t WriteCallback(void *contents, size_t size, size_t nmemb,
                               std::string *userp) {
@@ -85,7 +85,7 @@ class YouTubeMenu : public Menu {
   }
 
   void getFeed() {
-    std::vector<YTVideo> videos;
+    videos.clear();
 
     for (const std::string &channelID : channelIDs) {
       const std::string channelURL = rssTemplate + channelID;
@@ -96,14 +96,52 @@ class YouTubeMenu : public Menu {
         videos.push_back(video);
       }
     }
-
-    for (const YTVideo &video : videos) {
-      std::cout << video.getLine() << "\n";
-    }
   }
 
 public:
-  void render() override {}
+  YouTubeMenu() { getFeed(); }
 
-  void onInput(bool a, bool b, bool c, bool d) override { getFeed(); }
+  void render() override {
+    int rangeMin = 0;
+    int rangeMax = videos.size();
+
+    if ((videos.size() + PiPIO::CHAR_PAD) * PiPIO::CHARPX_HEIGHT >
+        PiPIO::DISPLAY_HEIGHT - 15) {
+      rangeMin = selection;
+    }
+
+    int y = 16;
+    for (int i = rangeMin; i < rangeMax; i++) {
+      const YTVideo &video = videos[i];
+
+      std::string bullet = " ";
+      if (selection == i) {
+        bullet = ">";
+      }
+
+      y += PiPIO::CHARPX_HEIGHT + PiPIO::CHAR_PAD;
+      PiPIO::drawText(0, y, bullet + video.title);
+      y += PiPIO::CHARPX_HEIGHT + PiPIO::CHAR_PAD;
+      PiPIO::drawText(20, y, "X " + video.channel);
+    }
+  }
+
+  void onInput(bool a, bool b, bool c, bool d) override {
+    if (!a && !b && !c && d) {
+      selection++;
+      if (selection == videos.size()) {
+        selection = 0;
+      }
+    }
+
+    if (a && !b && !c && !d) {
+      selection--;
+      if (selection < 0) {
+        selection = videos.size() - 1;
+      }
+    }
+
+    if (!a && !b && c && !d) {
+    }
+  }
 };

@@ -25,7 +25,8 @@ class YouTubeMenu : public Menu {
   const std::string rssTemplate =
       "https://www.youtube.com/feeds/videos.xml?channel_id=";
 
-  const std::vector<std::string> channelIDs = {"UC8CsGpP6kVNrWeBVmlJ2UyA"};
+  const std::vector<std::string> channelIDs = {"UC8CsGpP6kVNrWeBVmlJ2UyA",
+                                               "UCl2mFZoRqjw_ELax4Yisf6w"};
 
   static size_t WriteCallback(void *contents, size_t size, size_t nmemb,
                               std::string *userp) {
@@ -51,10 +52,10 @@ class YouTubeMenu : public Menu {
       if (res != CURLE_OK) {
         std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res)
                   << std::endl;
-        return ""; // Return an empty string on error
+        return "";
       }
     }
-    return readBuffer; // Return the RSS XML as a string
+    return readBuffer;
   }
 
   static std::vector<YTVideo> getChannelFeed(const std::string &rssXML) {

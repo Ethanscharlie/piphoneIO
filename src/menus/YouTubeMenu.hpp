@@ -1,5 +1,6 @@
 #pragma once
 
+#include <format>
 #include <gtest/gtest.h>
 #include <string>
 #include <vector>
@@ -15,6 +16,10 @@ class YouTubeMenu : public Menu {
     std::string url;
     std::string channel;
     std::string published;
+
+    std::string getLine() const {
+      return std::format("{} : {}", title, channel);
+    }
   };
 
   const std::string rssTemplate =
@@ -63,7 +68,7 @@ class YouTubeMenu : public Menu {
     const std::string channel = feed->FirstChildElement("title")->GetText();
 
     for (tinyxml2::XMLElement *entry = feed->FirstChildElement("entry");
-         entry != nullptr; entry = feed->NextSiblingElement("entry")) {
+         entry != nullptr; entry = entry->NextSiblingElement("entry")) {
       const std::string title = entry->FirstChildElement("title")->GetText();
       const std::string url =
           entry->FirstChildElement("link")->Attribute("href");
@@ -79,14 +84,18 @@ class YouTubeMenu : public Menu {
   void getFeed() {
     std::vector<YTVideo> videos;
 
-    for (std::string channelID : channelIDs) {
-      auto videos = getChannelFeed(getRssXml(rssTemplate + channelID));
+    for (const std::string &channelID : channelIDs) {
+      const std::string channelURL = rssTemplate + channelID;
+      const std::string rssXML = getRssXml(channelURL);
+      std::vector<YTVideo> channelVideos = getChannelFeed(rssXML);
 
-      std::cout << videos[0].title << "\n";
-      std::cout << videos[0].url << "\n";
-      std::cout << videos[0].channel << "\n";
-      std::cout << videos[0].published << "\n";
-      std::cout << "\n";
+      for (const YTVideo &video : channelVideos) {
+        videos.push_back(video);
+      }
+    }
+
+    for (const YTVideo &video : videos) {
+      std::cout << video.getLine() << "\n";
     }
   }
 

@@ -2,6 +2,7 @@
 #include "menus/HomeMenu.hpp"
 #include "menus/ListMenu.hpp"
 #include "menus/StopwatchMenu.hpp"
+#include "utils.hpp"
 #include <filesystem>
 #include <gtest/gtest.h>
 
@@ -71,6 +72,9 @@ int main() {
   PiPIO::refreshDisplay();
 
   while (1) {
+    if (getCurrentMili() % 1000 == 0) {
+      currentMenu->onSecondTick();
+    }
 #ifdef SIM
     SDL_Event event;
     while (SDL_PollEvent(&event)) {

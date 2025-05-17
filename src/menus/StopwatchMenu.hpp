@@ -1,14 +1,12 @@
 
 #pragma once
 
-#include <chrono>
 #include <format>
-#include <iostream>
 #include <string>
-#include <vector>
 
 #include "io/io.hpp"
 #include "menus/Menu.hpp"
+#include "utils.hpp"
 
 class StopwatchMenu : public Menu {
   int selection = 0;
@@ -16,14 +14,6 @@ class StopwatchMenu : public Menu {
   bool running = false;
   long recordedTime = 0;
   long startTime = 0;
-
-  long getCurrentMili() {
-    auto now = std::chrono::system_clock::now();
-    auto duration = now.time_since_epoch();
-    long milliseconds =
-        std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
-    return milliseconds;
-  }
 
   long getElapsedTimeSinceStart() { return getCurrentMili() - startTime; }
 
@@ -82,5 +72,11 @@ public:
     if (!a && !b && !c && d) {
       clearClock();
     }
+  }
+
+  void onSecondTick() override {
+    PiPIO::clearDisplay();
+    render();
+    PiPIO::refreshDisplay();
   }
 };

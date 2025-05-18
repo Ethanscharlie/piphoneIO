@@ -134,10 +134,10 @@ int main() {
       PiPIO::refreshDisplay();
     }
 
-#endif // SIM
     signal(SIGINT, [](int sig) {
       PiPIO::end();
       std::exit(1);
     });
+#endif // SIM
   }
 }

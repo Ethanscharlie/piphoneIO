@@ -1,7 +1,10 @@
 #include "utils.hpp"
+#include "io/io.hpp"
 #include "menus/YouTubeMenu.hpp"
 #include "tinyxml2.h"
 #include <curl/curl.h>
+#include <filesystem>
+#include <format>
 #include <fstream>
 #include <stdexcept>
 
@@ -79,7 +82,7 @@ std::vector<YTVideo> getChannelFeed(const std::string &rssXML) {
 void downloadAllRssXML(const std::vector<std::string> &channelIDs) {
   for (const std::string &channelID : channelIDs) {
     const std::string channelURL = RSS_YT_TEMPLATE + channelID;
-    downloadRssXML(channelURL, channelID);
+    downloadRssXML(channelURL, RSS_FOLDER + channelID);
   }
 }
 
@@ -97,4 +100,29 @@ std::vector<YTVideo> getFeed(const std::vector<std::string> &channelIDs) {
   }
 
   return videos;
+}
+
+bool isVideoDownloaded(const std::string &videoID) {
+  const std::string path = VIDEO_FOLDER + videoID + VIDEO_EXTENSION;
+  return std::filesystem::exists(path);
+}
+
+void downloadVideoAsAudio(const std::string &url, const std::string &id) {
+  std::string ytdlp = "/usr/local/bin/yt-dlp";
+#ifdef SIM
+  ytdlp = "yt-dlp";
+#endif // SIM
+
+  const std::string command = std::format("{} -x -o \"{}{}.%(ext)s\" '{}'",
+                                          ytdlp, VIDEO_FOLDER, id, url);
+
+  PiPIO::runSystemCommand(command);
+}
+
+std::string getVideoStatusCode(const std::string &videoID) {
+  if (isVideoDownloaded(videoID)) {
+    return VIDEOSTATUS_DOWNLOADED;
+  }
+
+  return VIDEOSTATUS_NOT_DOWNLOADED;
 }

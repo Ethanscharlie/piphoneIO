@@ -20,10 +20,21 @@ void YouTubeMenu::createFolders() const {
   }
 }
 
+void YouTubeMenu::download() const {
+  for (const YTVideo &video : videos) {
+    if (isVideoDownloaded(video.id)) {
+      continue;
+    }
+
+    downloadVideoAsAudio(video.url, video.id);
+  }
+}
+
 YouTubeMenu::YouTubeMenu() {
   createFolders();
   downloadAllRssXML(channelIDs);
   videos = getFeed(channelIDs);
+  download();
 }
 
 void YouTubeMenu::render() {
@@ -44,10 +55,12 @@ void YouTubeMenu::render() {
       bullet = ">";
     }
 
+    const std::string videoStatus = getVideoStatusCode(video.id);
+
     y += PiPIO::CHARPX_HEIGHT + PiPIO::CHAR_PAD;
     PiPIO::drawText(0, y, bullet + video.title);
     y += PiPIO::CHARPX_HEIGHT + PiPIO::CHAR_PAD;
-    PiPIO::drawText(20, y, "X " + video.channel);
+    PiPIO::drawText(20, y, videoStatus + " " + video.channel);
   }
 }
 

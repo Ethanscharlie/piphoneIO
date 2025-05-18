@@ -22,6 +22,8 @@ class YouTubeMenu : public Menu {
 
   void createFolders() const;
 
+  void download() const;
+
 public:
   YouTubeMenu();
 

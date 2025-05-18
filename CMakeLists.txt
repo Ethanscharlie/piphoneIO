@@ -14,16 +14,21 @@ set(SIM ON)
 find_package(GTest REQUIRED)
 find_package(CURL REQUIRED)
 
+set(sourceFiles 
+    src/io/display.cpp
+    src/io/font.cpp
+    src/main.cpp
+    src/menus/YouTubeMenu.cpp
+    tests/test.cpp
+
+    hardware/XML/tinyxml2.cpp
+)
+
 if (${SIM})
   find_package(SDL2 REQUIRED)
 
   add_executable(piphone
-    src/io/display.cpp
-    src/io/font.cpp
-    src/main.cpp
-    tests/test.cpp
-
-    hardware/XML/tinyxml2.cpp
+    ${sourceFiles}
   )
 
   target_include_directories(piphone PRIVATE
@@ -35,12 +40,8 @@ else()
   find_library(BCM2835_LIB bcm2835)
 
   add_executable(piphone
-    src/io/display.cpp
-    src/io/font.cpp
-    src/main.cpp
-    tests/test.cpp
+    ${sourceFiles}
 
-    hardware/XML/tinyxml2.cpp
     hardware/OLED/SSD1306_OLED.cpp
     hardware/OLED/SSD1306_OLED_font.cpp
     hardware/OLED/SSD1306_OLED_graphics.cpp

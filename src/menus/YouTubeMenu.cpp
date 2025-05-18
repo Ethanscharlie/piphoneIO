@@ -1,54 +1,16 @@
 #include "YouTubeMenu.hpp"
 
 #include <filesystem>
-#include <fstream>
 #include <gtest/gtest.h>
-#include <sstream>
 #include <string>
 #include <vector>
 
 #include "io/io.hpp"
-#include "tinyxml2.h"
-
-#include "curl/curl.h"
-
-size_t YouTubeMenu::WriteCallback(void *contents, size_t size, size_t nmemb,
-                                  std::string *userp) {
-  size_t totalSize = size * nmemb;
-  userp->append((char *)contents, totalSize);
-  return totalSize;
-}
-
-void YouTubeMenu::downloadRssXML(const std::string &url,
-                                 const std::string &name) const {
-  CURL *curl;
-  CURLcode res;
-  std::string readBuffer;
-
-  curl = curl_easy_init();
-  if (curl) {
-    curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); // Follow redirects
-    res = curl_easy_perform(curl);
-    curl_easy_cleanup(curl);
-
-    if (res != CURLE_OK) {
-      std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res)
-                << std::endl;
-      return;
-    }
-  }
-
-  std::ofstream file(rssFolder + name);
-  file << readBuffer;
-  file.close();
-}
+#include "utils.hpp"
 
 void YouTubeMenu::createFolders() const {
   std::vector<std::string> folders = {"piphone_data", "piphone_data/yt",
-                                      rssFolder, videoFolder};
+                                      RSS_FOLDER, VIDEO_FOLDER};
 
   for (const std::string &folder : folders) {
     if (!std::filesystem::is_directory(folder) ||
@@ -58,63 +20,10 @@ void YouTubeMenu::createFolders() const {
   }
 }
 
-std::string YouTubeMenu::readFile(const std::string &filepath) {
-  std::ifstream file(filepath);
-  std::ostringstream ss;
-  ss << file.rdbuf();
-  std::string str = ss.str();
-  return str;
-}
-
-std::vector<YTVideo> YouTubeMenu::getChannelFeed(const std::string &rssXML) {
-  std::vector<YTVideo> videos;
-
-  tinyxml2::XMLDocument doc;
-  doc.Parse(rssXML.c_str());
-
-  tinyxml2::XMLElement *feed = doc.FirstChildElement("feed");
-
-  const std::string channel = feed->FirstChildElement("title")->GetText();
-
-  for (tinyxml2::XMLElement *entry = feed->FirstChildElement("entry");
-       entry != nullptr; entry = entry->NextSiblingElement("entry")) {
-    const std::string title = entry->FirstChildElement("title")->GetText();
-    const std::string url = entry->FirstChildElement("link")->Attribute("href");
-    const std::string published =
-        entry->FirstChildElement("published")->GetText();
-    const std::string id = entry->FirstChildElement("yt:videoId")->GetText();
-
-    videos.push_back({title, url, channel, published, id});
-  }
-
-  return videos;
-}
-
-void YouTubeMenu::downloadAllRssXML() {
-  for (const std::string &channelID : channelIDs) {
-    const std::string channelURL = rssTemplate + channelID;
-    downloadRssXML(channelURL, channelID);
-  }
-}
-
-void YouTubeMenu::getFeed() {
-  videos.clear();
-
-  for (const std::string &channelID : channelIDs) {
-    const std::string filepath = rssFolder + channelID;
-    const std::string rssXML = readFile(filepath);
-    std::vector<YTVideo> channelVideos = getChannelFeed(rssXML);
-
-    for (const YTVideo &video : channelVideos) {
-      videos.push_back(video);
-    }
-  }
-}
-
 YouTubeMenu::YouTubeMenu() {
   createFolders();
-  downloadAllRssXML();
-  getFeed();
+  downloadAllRssXML(channelIDs);
+  videos = getFeed(channelIDs);
 }
 
 void YouTubeMenu::render() {

@@ -19,6 +19,7 @@ set(sourceFiles
     src/io/font.cpp
     src/main.cpp
     src/menus/YouTubeMenu.cpp
+    src/utils.cpp
     tests/test.cpp
 
     hardware/XML/tinyxml2.cpp

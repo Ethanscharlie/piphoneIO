@@ -20,6 +20,7 @@ set(sourceFiles
     src/main.cpp
     src/menus/YouTubeMenu.cpp
     src/utils.cpp
+    src/audio.cpp
     tests/test.cpp
 
     hardware/XML/tinyxml2.cpp

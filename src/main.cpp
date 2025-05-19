@@ -58,7 +58,7 @@ int main() {
 
   HomeMenu homeMenu =
       HomeMenu({{"Music", [&]() { currentMenu = &musicMenu; }},
-                {"YouTube", []() {}},
+                {"YouTube", [&]() { currentMenu = &youTubeMenu; }},
                 {"Spend Recorder", []() {}},
                 {"AudioBooks", []() {}},
                 {"Media Library", []() {}},
@@ -66,7 +66,7 @@ int main() {
                 {"Alarm", []() {}},
                 {"Settings", []() {}}});
 
-  currentMenu = &youTubeMenu;
+  currentMenu = &homeMenu;
   currentMenu->render();
   PiPIO::refreshDisplay();
 

@@ -126,3 +126,27 @@ std::string getVideoStatusCode(const std::string &videoID) {
 
   return VIDEOSTATUS_NOT_DOWNLOADED;
 }
+
+std::vector<std::string> getAllAudioFiles(const std::string &folder) {
+  if (!std::filesystem::exists(folder)) {
+    throw std::runtime_error("Folder does not exist " + folder);
+  }
+
+  std::vector<std::string> files;
+
+  for (const auto &file :
+       std::filesystem::recursive_directory_iterator(folder)) {
+    if (!file.is_regular_file()) {
+      continue;
+    }
+
+    for (const std::string &filetype : AUDIO_FILETYPES) {
+      if (file.path().extension() == filetype) {
+        files.push_back(file.path());
+        break;
+      }
+    }
+  }
+
+  return files;
+}

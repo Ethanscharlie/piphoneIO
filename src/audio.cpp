@@ -63,4 +63,6 @@ void clearAndAdd(const std::string &file) {
   add(file);
 }
 
+std::string getCurrentFile() { return audioQueue.front(); }
+
 } // namespace Audio

@@ -17,4 +17,6 @@ void clear();
 
 void clearAndAdd(const std::string &file);
 
+std::string getCurrentFile();
+
 } // namespace Audio

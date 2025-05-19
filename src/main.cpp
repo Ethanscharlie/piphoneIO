@@ -1,3 +1,4 @@
+#include "audio.hpp"
 #include "io/io.hpp"
 #include "menus/HomeMenu.hpp"
 #include "menus/ListMenu.hpp"
@@ -34,12 +35,12 @@ int main() {
     for (const auto &entry : std::filesystem::directory_iterator(musicDir)) {
       if (std::filesystem::is_directory(entry)) {
         std::string name = entry.path().filename().string();
-        musicArtists.options.push_back({name, [name]() {
-                                          PiPIO::runSystemCommand(
-                                              "mpc clear; mpc add Music/\"" +
-                                              name + "\"");
-                                          PiPIO::runSystemCommand("mpc play");
-                                        }});
+        musicArtists.options.push_back(
+            {name, [name, musicDir]() {
+               Audio::clear();
+               Audio::addList(getAllAudioFiles(musicDir / name));
+               Audio::play();
+             }});
       }
     }
   } else {
@@ -47,12 +48,13 @@ int main() {
   }
 
   ListMenu musicMenu =
-      ListMenu({{"Toggle", [&]() { PiPIO::runSystemCommand("mpc toggle"); }},
-                {"Skip", []() { PiPIO::runSystemCommand("mpc next"); }},
+      ListMenu({{"Toggle", [&]() { Audio::toggle(); }},
+                {"Skip", []() { Audio::next(); }},
                 {"Queue All",
-                 []() {
-                   PiPIO::runSystemCommand(
-                       "mpc clear; mpc add Music; mpc shuffle; mpc play");
+                 [musicDir]() {
+                   Audio::clear();
+                   Audio::addList(getAllAudioFiles(musicDir));
+                   Audio::play();
                  }},
                 {"Pick Artist", [&]() { currentMenu = &musicArtists; }}});
 

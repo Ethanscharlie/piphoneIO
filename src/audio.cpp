@@ -41,6 +41,12 @@ void add(const std::string &file) {
   audioQueue.push(file);
 }
 
+void addList(const std::vector<std::string> &files) {
+  for (const std::string &file : files) {
+    add(file);
+  }
+}
+
 void next() {
   if (audioQueue.size() <= 1) {
     std::cerr << "Can't skip, only 1 or less files in queue\n";

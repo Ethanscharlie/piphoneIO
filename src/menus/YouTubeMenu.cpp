@@ -64,21 +64,18 @@ void YouTubeMenu::render() {
   }
 }
 
-void YouTubeMenu::onInput(bool a, bool b, bool c, bool d) {
-  if (!a && !b && !c && d) {
+void YouTubeMenu::onJoystick(int x, int y) {
+  if (x == 1) {
     selection++;
     if (selection == videos.size()) {
       selection = 0;
     }
   }
 
-  if (a && !b && !c && !d) {
+  else if (x == -1) {
     selection--;
     if (selection < 0) {
       selection = videos.size() - 1;
     }
-  }
-
-  if (!a && !b && c && !d) {
   }
 }

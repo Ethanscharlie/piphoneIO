@@ -28,6 +28,5 @@ public:
   YouTubeMenu();
 
   void render() override;
-
-  void onInput(bool a, bool b, bool c, bool d) override;
+  void onJoystick(int x, int y) override;
 };

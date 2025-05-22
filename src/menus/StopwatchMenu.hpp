@@ -3,6 +3,7 @@
 
 #include <format>
 #include <string>
+#include <unistd.h>
 
 #include "io/io.hpp"
 #include "menus/Menu.hpp"
@@ -60,19 +61,9 @@ class StopwatchMenu : public Menu {
 public:
   void render() override { PiPIO::drawText(20, 20, getClockString()); }
 
-  void onInput(bool a, bool b, bool c, bool d) override {
-    if (a && !b && !c && !d) {
-      startClock();
-    }
-
-    if (!a && !b && c && !d) {
-      pauseClock();
-    }
-
-    if (!a && !b && !c && d) {
-      clearClock();
-    }
-  }
+  void onAButton() override { startClock(); }
+  void onBButton() override { pauseClock(); }
+  void onCButton() override { clearClock(); }
 
   void onSecondTick() override {
     PiPIO::clearDisplay();

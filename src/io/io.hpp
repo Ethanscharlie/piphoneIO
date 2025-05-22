@@ -15,13 +15,6 @@ namespace PiPIO {
 
 typedef std::vector<int> Charmap;
 
-struct Buttons {
-  bool a = false;
-  bool b = false;
-  bool c = false;
-  bool d = false;
-};
-
 #ifdef SIM
 
 inline SDL_Renderer *renderer = nullptr;
@@ -56,7 +49,5 @@ void refreshDisplay();
 void clearDisplay();
 void setPixel(int x, int y, bool value);
 void drawText(int x, int y, std::string text);
-
-Buttons getButtons();
 
 } // namespace PiPIO

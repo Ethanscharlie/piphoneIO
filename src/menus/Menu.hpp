@@ -3,6 +3,10 @@
 class Menu {
 public:
   virtual void render() {}
-  virtual void onInput(bool a, bool b, bool c, bool d) {}
   virtual void onSecondTick() {}
+
+  virtual void onAButton() {}
+  virtual void onBButton() {}
+  virtual void onCButton() {}
+  virtual void onJoystick(int x, int y) {}
 };

@@ -41,23 +41,21 @@ public:
     PiPIO::drawText(5, 16 + 5, options[selection].first);
   }
 
-  void onInput(bool a, bool b, bool c, bool d) override {
-    if (!a && !b && !c && d) {
+  void onAButton() override { options[selection].second(); }
+
+  void onJoystick(int x, int y) override {
+    if (x == 1) {
       selection++;
       if (selection == options.size()) {
         selection = 0;
       }
     }
 
-    if (a && !b && !c && !d) {
+    else if (x == -1) {
       selection--;
       if (selection < 0) {
         selection = options.size() - 1;
       }
-    }
-
-    if (!a && !b && c && !d) {
-      options[selection].second();
     }
   }
 };

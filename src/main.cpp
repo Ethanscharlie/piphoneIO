@@ -27,7 +27,7 @@ int main() {
   Menu *currentMenu = nullptr;
 
   StopwatchMenu stopwatchMenu;
-  YouTubeMenu youTubeMenu;
+  // YouTubeMenu youTubeMenu;
 
   ListMenu musicArtists({});
   std::filesystem::path musicDir = "/home/ethanscharlie/Music/";
@@ -60,7 +60,7 @@ int main() {
 
   HomeMenu homeMenu =
       HomeMenu({{"Music", [&]() { currentMenu = &musicMenu; }},
-                {"YouTube", [&]() { currentMenu = &youTubeMenu; }},
+                // {"YouTube", [&]() { currentMenu = &youTubeMenu; }},
                 {"Spend Recorder", []() {}},
                 {"AudioBooks", []() {}},
                 {"Media Library", []() {}},
@@ -79,17 +79,24 @@ int main() {
 #ifdef SIM
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-      if (event.type == SDL_KEYUP) {
+      if (event.type == SDL_KEYDOWN) {
         PiPIO::clearDisplay();
 
         if (event.key.keysym.sym == SDLK_j)
-          currentMenu->onInput(1, 0, 0, 0);
+          currentMenu->onAButton();
         if (event.key.keysym.sym == SDLK_k)
-          currentMenu = &homeMenu;
+          currentMenu->onBButton();
         if (event.key.keysym.sym == SDLK_l)
-          currentMenu->onInput(0, 0, 1, 0);
-        if (event.key.keysym.sym == SDLK_SEMICOLON)
-          currentMenu->onInput(0, 0, 0, 1);
+          currentMenu->onCButton();
+
+        if (event.key.keysym.sym == SDLK_w)
+          currentMenu->onJoystick(0, 1);
+        if (event.key.keysym.sym == SDLK_s)
+          currentMenu->onJoystick(0, -1);
+        if (event.key.keysym.sym == SDLK_d)
+          currentMenu->onJoystick(1, 0);
+        if (event.key.keysym.sym == SDLK_a)
+          currentMenu->onJoystick(-1, 0);
 
         if (event.key.keysym.sym == SDLK_q) {
           PiPIO::end();

@@ -17,8 +17,6 @@ struct YTVideo {
 class YouTubeMenu : public Menu {
   const std::vector<std::string> channelIDs = {"UC8CsGpP6kVNrWeBVmlJ2UyA",
                                                "UCl2mFZoRqjw_ELax4Yisf6w"};
-  int selection = 0;
-  std::vector<std::pair<std::string, std::function<void()>>> options;
   std::vector<YTVideo> videos;
 
   void createFolders() const;
@@ -28,8 +26,4 @@ class YouTubeMenu : public Menu {
 
 public:
   YouTubeMenu();
-
-  void render() override;
-  void onJoystick(int x, int y) override;
-  void onAButton() override;
 };

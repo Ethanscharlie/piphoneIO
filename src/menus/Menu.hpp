@@ -1,11 +1,23 @@
 #pragma once
 
+#include <functional>
+#include <string>
+#include <vector>
+
 class Menu {
 public:
-  virtual void render() {}
-  virtual void onSecondTick() {}
+  std::vector<std::pair<std::string, std::function<void()>>> options;
+  int selection = 0;
 
-  virtual void onAButton() {}
+  Menu() {}
+
+  Menu(std::vector<std::pair<std::string, std::function<void()>>> options)
+      : options(options) {}
+
+  virtual void onSecondTick() {}
   virtual void onBButton() {}
-  virtual void onJoystick(int x, int y) {}
+
+  virtual void render();
+  virtual void onAButton();
+  virtual void onJoystick(int x, int y);
 };

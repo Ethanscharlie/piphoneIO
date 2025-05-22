@@ -1,7 +1,6 @@
 #include "audio.hpp"
 #include "io/io.hpp"
-#include "menus/HomeMenu.hpp"
-#include "menus/ListMenu.hpp"
+#include "menus/Menu.hpp"
 #include "menus/StopwatchMenu.hpp"
 #include "menus/YouTubeMenu.hpp"
 #include "utils.hpp"
@@ -29,7 +28,7 @@ int main() {
   StopwatchMenu stopwatchMenu;
   YouTubeMenu youTubeMenu;
 
-  ListMenu musicArtists({});
+  Menu musicArtists;
   std::filesystem::path musicDir = "/home/ethanscharlie/Music/";
   if (std::filesystem::exists(musicDir)) {
     for (const auto &entry : std::filesystem::directory_iterator(musicDir)) {
@@ -47,26 +46,25 @@ int main() {
     musicArtists.options.push_back({"Nothing Found.", []() {}});
   }
 
-  ListMenu musicMenu =
-      ListMenu({{"Toggle", [&]() { Audio::toggle(); }},
-                {"Skip", []() { Audio::next(); }},
-                {"Queue All",
-                 [musicDir]() {
-                   Audio::clear();
-                   Audio::addList(getAllAudioFiles(musicDir));
-                   Audio::play();
-                 }},
-                {"Pick Artist", [&]() { currentMenu = &musicArtists; }}});
+  Menu musicMenu =
+      Menu({{"Toggle", [&]() { Audio::toggle(); }},
+            {"Skip", []() { Audio::next(); }},
+            {"Queue All",
+             [musicDir]() {
+               Audio::clear();
+               Audio::addList(getAllAudioFiles(musicDir));
+               Audio::play();
+             }},
+            {"Pick Artist", [&]() { currentMenu = &musicArtists; }}});
 
-  ListMenu homeMenu =
-      ListMenu({{"Music", [&]() { currentMenu = &musicMenu; }},
-                {"YouTube", [&]() { currentMenu = &youTubeMenu; }},
-                {"Spend Recorder", []() {}},
-                {"AudioBooks", []() {}},
-                {"Media Library", []() {}},
-                {"Stopwatch", [&]() { currentMenu = &stopwatchMenu; }},
-                {"Alarm", []() {}},
-                {"Settings", []() {}}});
+  Menu homeMenu = Menu({{"Music", [&]() { currentMenu = &musicMenu; }},
+                        {"YouTube", [&]() { currentMenu = &youTubeMenu; }},
+                        {"Spend Recorder", []() {}},
+                        {"AudioBooks", []() {}},
+                        {"Media Library", []() {}},
+                        {"Stopwatch", [&]() { currentMenu = &stopwatchMenu; }},
+                        {"Alarm", []() {}},
+                        {"Settings", []() {}}});
 
   currentMenu = &homeMenu;
   currentMenu->render();

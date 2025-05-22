@@ -34,6 +34,7 @@ void YouTubeMenu::refresh() {
   downloadAllRssXML(channelIDs);
   videos = getFeed(channelIDs);
   assembleMenu();
+  render();
 }
 
 void YouTubeMenu::assembleMenu() {

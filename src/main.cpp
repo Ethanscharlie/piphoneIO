@@ -58,8 +58,8 @@ int main() {
                  }},
                 {"Pick Artist", [&]() { currentMenu = &musicArtists; }}});
 
-  HomeMenu homeMenu =
-      HomeMenu({{"Music", [&]() { currentMenu = &musicMenu; }},
+  ListMenu homeMenu =
+      ListMenu({{"Music", [&]() { currentMenu = &musicMenu; }},
                 {"YouTube", [&]() { currentMenu = &youTubeMenu; }},
                 {"Spend Recorder", []() {}},
                 {"AudioBooks", []() {}},

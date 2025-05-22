@@ -33,6 +33,17 @@ void YouTubeMenu::download() const {
 void YouTubeMenu::refresh() {
   downloadAllRssXML(channelIDs);
   videos = getFeed(channelIDs);
+  assembleMenu();
+}
+
+void YouTubeMenu::assembleMenu() {
+  options.clear();
+  options.push_back({"Refresh", [this]() { refresh(); }});
+  options.push_back({"Download", [this]() { download(); }});
+
+  for (YTVideo video : videos) {
+    options.push_back({video.title, [this]() {}});
+  }
 }
 
 YouTubeMenu::YouTubeMenu() {
@@ -41,29 +52,32 @@ YouTubeMenu::YouTubeMenu() {
 }
 
 void YouTubeMenu::render() {
-  int rangeMin = 0;
-  int rangeMax = videos.size();
-
-  if ((videos.size() + PiPIO::CHAR_PAD) * PiPIO::CHARPX_HEIGHT >
-      PiPIO::DISPLAY_HEIGHT - 15) {
-    rangeMin = selection;
+  if (options.empty()) {
+    throw std::logic_error("Menu needs at least one option");
   }
 
-  int y = 16;
-  for (int i = rangeMin; i < rangeMax; i++) {
-    const YTVideo &video = videos[i];
+  int rangeMin = 0;
+  int rangeMax = options.size();
 
-    std::string bullet = " ";
-    if (selection == i) {
-      bullet = ">";
+  if ((options.size() + PiPIO::CHAR_PAD) * PiPIO::CHARPX_HEIGHT >
+      PiPIO::DISPLAY_HEIGHT - 15) {
+    rangeMin = selection;
+    rangeMax = 10;
+  }
+  for (int i = rangeMin; i < rangeMax; i++) {
+    std::string text = "";
+
+    if (i == selection) {
+      text += ">";
+    } else {
+      text += " ";
     }
 
-    const std::string videoStatus = getVideoStatusCode(video.id);
+    text += options[i].first;
 
-    y += PiPIO::CHARPX_HEIGHT + PiPIO::CHAR_PAD;
-    PiPIO::drawText(0, y, bullet + video.title);
-    y += PiPIO::CHARPX_HEIGHT + PiPIO::CHAR_PAD;
-    PiPIO::drawText(20, y, videoStatus + " " + video.channel);
+    int iPos = i - rangeMin;
+    int y = iPos * PiPIO::CHARPX_HEIGHT + PiPIO::CHAR_PAD;
+    PiPIO::drawText(0, y, text);
   }
 }
 
@@ -82,3 +96,5 @@ void YouTubeMenu::onJoystick(int x, int y) {
     }
   }
 }
+
+void YouTubeMenu::onAButton() { options[selection].second(); }

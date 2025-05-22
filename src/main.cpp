@@ -27,7 +27,7 @@ int main() {
   Menu *currentMenu = nullptr;
 
   StopwatchMenu stopwatchMenu;
-  // YouTubeMenu youTubeMenu;
+  YouTubeMenu youTubeMenu;
 
   ListMenu musicArtists({});
   std::filesystem::path musicDir = "/home/ethanscharlie/Music/";
@@ -60,7 +60,7 @@ int main() {
 
   HomeMenu homeMenu =
       HomeMenu({{"Music", [&]() { currentMenu = &musicMenu; }},
-                // {"YouTube", [&]() { currentMenu = &youTubeMenu; }},
+                {"YouTube", [&]() { currentMenu = &youTubeMenu; }},
                 {"Spend Recorder", []() {}},
                 {"AudioBooks", []() {}},
                 {"Media Library", []() {}},

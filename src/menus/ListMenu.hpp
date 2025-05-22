@@ -48,14 +48,14 @@ public:
   void onAButton() override { options[selection].second(); }
 
   void onJoystick(int x, int y) override {
-    if (x == 1) {
+    if (y == -1) {
       selection++;
       if (selection == options.size()) {
         selection = 0;
       }
     }
 
-    else if (x == -1) {
+    else if (y == 1) {
       selection--;
       if (selection < 0) {
         selection = options.size() - 1;

@@ -34,7 +34,6 @@ YouTubeMenu::YouTubeMenu() {
   createFolders();
   downloadAllRssXML(channelIDs);
   videos = getFeed(channelIDs);
-  download();
 }
 
 void YouTubeMenu::render() {
@@ -65,14 +64,14 @@ void YouTubeMenu::render() {
 }
 
 void YouTubeMenu::onJoystick(int x, int y) {
-  if (x == 1) {
+  if (y == -1) {
     selection++;
     if (selection == videos.size()) {
       selection = 0;
     }
   }
 
-  else if (x == -1) {
+  else if (y == 1) {
     selection--;
     if (selection < 0) {
       selection = videos.size() - 1;

@@ -62,8 +62,8 @@ public:
   void render() override { PiPIO::drawText(20, 20, getClockString()); }
 
   void onAButton() override { startClock(); }
-  void onBButton() override { pauseClock(); }
-  void onCButton() override { clearClock(); }
+  // void onBButton() override { pauseClock(); }
+  void onBButton() override { clearClock(); }
 
   void onSecondTick() override {
     PiPIO::clearDisplay();

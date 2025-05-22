@@ -7,6 +7,5 @@ public:
 
   virtual void onAButton() {}
   virtual void onBButton() {}
-  virtual void onCButton() {}
   virtual void onJoystick(int x, int y) {}
 };

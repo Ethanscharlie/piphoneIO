@@ -87,7 +87,7 @@ int main() {
         if (event.key.keysym.sym == SDLK_k)
           currentMenu->onBButton();
         if (event.key.keysym.sym == SDLK_l)
-          currentMenu->onCButton();
+          currentMenu = &homeMenu;
 
         if (event.key.keysym.sym == SDLK_w)
           currentMenu->onJoystick(0, 1);

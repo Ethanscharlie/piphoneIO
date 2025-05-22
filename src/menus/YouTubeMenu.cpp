@@ -30,10 +30,14 @@ void YouTubeMenu::download() const {
   }
 }
 
-YouTubeMenu::YouTubeMenu() {
-  createFolders();
+void YouTubeMenu::refresh() {
   downloadAllRssXML(channelIDs);
   videos = getFeed(channelIDs);
+}
+
+YouTubeMenu::YouTubeMenu() {
+  createFolders();
+  refresh();
 }
 
 void YouTubeMenu::render() {

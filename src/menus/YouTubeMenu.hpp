@@ -21,8 +21,8 @@ class YouTubeMenu : public Menu {
   std::vector<YTVideo> videos;
 
   void createFolders() const;
-
   void download() const;
+  void refresh();
 
 public:
   YouTubeMenu();

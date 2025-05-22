@@ -67,6 +67,7 @@ int main() {
                         {"Settings", []() {}}});
 
   currentMenu = &homeMenu;
+  PiPIO::clearDisplay();
   currentMenu->render();
   PiPIO::refreshDisplay();
 

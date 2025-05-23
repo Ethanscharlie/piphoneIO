@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "audio.hpp"
 #include "io/io.hpp"
 #include "utils.hpp"
 
@@ -43,7 +44,11 @@ void YouTubeMenu::assembleMenu() {
   menu.options.push_back({"Download", [this]() { download(); }});
 
   for (YTVideo video : videos) {
-    menu.options.push_back({video.title, [this]() {}});
+    menu.options.push_back({video.title, [this, video]() {
+                              Audio::clearAndAdd(VIDEO_FOLDER + video.id +
+                                                 VIDEO_EXTENSION);
+                              Audio::play();
+                            }});
   }
 }
 

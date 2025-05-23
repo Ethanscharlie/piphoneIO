@@ -57,14 +57,15 @@ int main() {
              }},
             {"Pick Artist", [&]() { currentMenu = &musicArtists; }}});
 
-  Menu homeMenu = Menu({{"Music", [&]() { currentMenu = &musicMenu; }},
-                        {"YouTube", [&]() { currentMenu = &youTubeMenu; }},
-                        {"Spend Recorder", []() {}},
-                        {"AudioBooks", []() {}},
-                        {"Media Library", []() {}},
-                        {"Stopwatch", [&]() { currentMenu = &stopwatchMenu; }},
-                        {"Alarm", []() {}},
-                        {"Settings", []() {}}});
+  Menu homeMenu =
+      Menu({{"Music", [&]() { currentMenu = &musicMenu; }},
+            {"YouTube", [&]() { currentMenu = &youTubeMenu.menu; }},
+            {"Spend Recorder", []() {}},
+            {"AudioBooks", []() {}},
+            {"Media Library", []() {}},
+            {"Stopwatch", [&]() { currentMenu = &stopwatchMenu.menu; }},
+            {"Alarm", []() {}},
+            {"Settings", []() {}}});
 
   currentMenu = &homeMenu;
   PiPIO::clearDisplay();

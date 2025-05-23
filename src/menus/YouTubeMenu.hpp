@@ -14,7 +14,7 @@ struct YTVideo {
   std::string id;
 };
 
-class YouTubeMenu : public Menu {
+class YouTubeMenu {
   const std::vector<std::string> channelIDs = {"UC8CsGpP6kVNrWeBVmlJ2UyA",
                                                "UCl2mFZoRqjw_ELax4Yisf6w"};
   std::vector<YTVideo> videos;
@@ -25,5 +25,7 @@ class YouTubeMenu : public Menu {
   void assembleMenu();
 
 public:
+  Menu menu;
+
   YouTubeMenu();
 };

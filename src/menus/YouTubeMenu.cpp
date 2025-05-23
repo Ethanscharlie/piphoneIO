@@ -34,16 +34,16 @@ void YouTubeMenu::refresh() {
   downloadAllRssXML(channelIDs);
   videos = getFeed(channelIDs);
   assembleMenu();
-  render();
+  menu.render();
 }
 
 void YouTubeMenu::assembleMenu() {
-  options.clear();
-  options.push_back({"Refresh", [this]() { refresh(); }});
-  options.push_back({"Download", [this]() { download(); }});
+  menu.options.clear();
+  menu.options.push_back({"Refresh", [this]() { refresh(); }});
+  menu.options.push_back({"Download", [this]() { download(); }});
 
   for (YTVideo video : videos) {
-    options.push_back({video.title, [this]() {}});
+    menu.options.push_back({video.title, [this]() {}});
   }
 }
 

@@ -9,8 +9,7 @@
 #include "menus/Menu.hpp"
 #include "utils.hpp"
 
-class StopwatchMenu : public Menu {
-  int selection = 0;
+class StopwatchMenu {
 
   bool running = false;
   long recordedTime = 0;
@@ -59,15 +58,5 @@ class StopwatchMenu : public Menu {
   }
 
 public:
-  void render() override { PiPIO::drawText(20, 20, getClockString()); }
-
-  void onAButton() override { startClock(); }
-  // void onBButton() override { pauseClock(); }
-  void onBButton() override { clearClock(); }
-
-  void onSecondTick() override {
-    PiPIO::clearDisplay();
-    render();
-    PiPIO::refreshDisplay();
-  }
+  Menu menu;
 };

@@ -4,6 +4,8 @@
 #include <vector>
 namespace Audio {
 
+void init();
+
 void pause();
 
 void play();

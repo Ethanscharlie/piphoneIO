@@ -27,7 +27,7 @@ void Menu::render() {
     text += options[i].first;
 
     int iPos = i - rangeMin;
-    int y = 16 + iPos * PiPIO::CHARPX_HEIGHT + PiPIO::CHAR_PAD;
+    int y = iPos * PiPIO::CHARPX_HEIGHT + PiPIO::CHAR_PAD;
     PiPIO::drawText(0, y, text);
   }
 }

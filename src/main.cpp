@@ -22,6 +22,7 @@ int main() {
 
   PiPIO::init();
   PiPIO::refreshDisplay();
+  Audio::init();
 
   Menu *currentMenu = nullptr;
 

@@ -11,6 +11,8 @@ enable_testing()
 set(SIM ON)
 
 # Find packages
+find_package(SDL2 REQUIRED)
+find_package(SDL2_mixer REQUIRED)
 find_package(GTest REQUIRED)
 find_package(CURL REQUIRED)
 
@@ -28,8 +30,6 @@ set(sourceFiles
 )
 
 if (${SIM})
-  find_package(SDL2 REQUIRED)
-
   add_executable(piphone
     ${sourceFiles}
   )
@@ -63,13 +63,11 @@ endif()
 target_link_libraries(piphone PRIVATE 
   GTest::gtest_main
   CURL::libcurl
+  SDL2::SDL2
+  SDL2_mixer::SDL2_mixer
 )
 
 if (${SIM})
-  target_link_libraries(piphone PRIVATE 
-    SDL2::SDL2
-  )
-
   target_compile_definitions(piphone PRIVATE 
     -DSIM 
   )

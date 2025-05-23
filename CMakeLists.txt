@@ -38,6 +38,7 @@ if (${SIM})
     include
     src
     hardware/XML
+    hardware/vlcpp
   )
 else()
   find_library(BCM2835_LIB bcm2835)
@@ -56,6 +57,7 @@ else()
     src
     hardware/OLED
     hardware/XML
+    hardware/vlcpp
   )
 endif()
 

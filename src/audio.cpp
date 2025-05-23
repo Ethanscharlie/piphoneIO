@@ -44,11 +44,15 @@ void init() {
         continue;
       }
 
+      while (!playing) {
+        continue;
+      }
+
       Mix_PlayChannel(-1, chunk, 0);
-      std::string currentFile = audioQueue.front();
+      const std::string currentFile = audioQueue.front();
 
       while (Mix_Playing(-1)) {
-        if (currentFile != audioQueue.front()) {
+        if (currentFile != audioQueue.front()) { // Skip Button
           break;
         }
 
@@ -61,7 +65,10 @@ void init() {
   });
 }
 
-void pause() { playing = false; }
+void pause() {
+  playing = false;
+  Mix_Pause(-1);
+}
 
 void play() {
   if (audioQueue.size() <= 0) {
@@ -70,6 +77,8 @@ void play() {
   }
 
   playing = true;
+
+  Mix_Resume(-1);
 }
 
 void toggle() {
